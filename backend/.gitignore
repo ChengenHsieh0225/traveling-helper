@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+[Dd]esktop.ini
+Thumbs.db
+
+# Sensitive information (only stored locally)
+.env
+*.local
+
+# Compiler
+.vscode/
+.idea/
+
+# Python
+__pycache__/ 
+
+# For npm packages and building for frontend or backend project
+node_modules/
+dist/
+build/
+*.log

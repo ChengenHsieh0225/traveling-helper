@@ -39,7 +39,7 @@ function compute() {
     const from_ccy = select_from_ccy.value;
     const to_ccy = select_to_ccy.value;
 
-    const url = `http://127.0.0.1:8000/currency-exchange/latest?from_ccy=${from_ccy}&to_ccy=${to_ccy}&amount=${amount}`
+    const url = `https://traveling-helper.onrender.com/currency-exchange/latest?from_ccy=${from_ccy}&to_ccy=${to_ccy}&amount=${amount}`
 
     fetch(url)
         .then(response => {

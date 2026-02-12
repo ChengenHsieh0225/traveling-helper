@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traveling Helper</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <header>
+        <button class="navigation-pill h2">Currency</button>
+        <button class="navigation-pill h2">Weather</button>
+        <button class="navigation-pill h2">News</button>
+        <button class="navigation-pill h2">My Notes</button>
+    </header>
+    <section class="container-converter">
+        <div class="inner-col">
+            <p class="title">Amount</p>
+            <input id="input-amount" class="title" type="number" step="any" placeholder="Input a number">
+        </div>
+        <div class="inner-row align-end">
+            <div class="inner-col">
+                <p class="title">From</p>
+                <select id="select-from-ccy" class="currency-type title" name="from-ccy">
+                    <option value="twd">NTD</option>
+                    <option value="usd">USD</option>
+                    <option value="jpy">JPY</option>
+                    <option value="krw">KRW</option>
+                </select>
+            </div>
+            <button id="btn-exchange">
+                <img src="./assets/exchange-icon.png">
+            </button>
+            <div class="inner-col">
+                <p class="title">To</p>
+                <select id="select-to-ccy" class="currency-type title" name="to-ccy">
+                    <option value="twd">NTD</option>
+                    <option value="usd">USD</option>
+                    <option value="jpy">JPY</option>
+                    <option value="krw">KRW</option>
+                </select>
+            </div>
+        </div>
+        <div class="inner-col" id="container-result">
+            <p class="title" id="p-result"></p>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

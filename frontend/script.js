@@ -5,12 +5,13 @@ const select_from_ccy = document.getElementById('select-from-ccy')
 const select_to_ccy = document.getElementById('select-to-ccy');
 const btn_exchange = document.getElementById('btn-exchange');
 
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://127.0.0.1:8000"
+    : "https://traveling-helper.onrender.com";
+
 // 2. 監聽點擊事件
 btn_exchange.addEventListener('click', () => {
     // 3. 改變頁面互動
-    // let amount = Number(p_result.innerText);
-    // amount++;
-    // p_result.innerText = amount;
 
     const temp = select_from_ccy.selectedIndex;
     select_from_ccy.selectedIndex = select_to_ccy.selectedIndex;
@@ -30,7 +31,6 @@ select_to_ccy.addEventListener('change', () => {
 const debouncedCompute = debounce(compute, 300);
 
 input_amount.addEventListener('input', () => {
-    // debounce(compute, 500);
     debouncedCompute();
 });
 
@@ -39,7 +39,7 @@ function compute() {
     const from_ccy = select_from_ccy.value;
     const to_ccy = select_to_ccy.value;
 
-    const url = `https://traveling-helper.onrender.com/currency-exchange/latest?from_ccy=${from_ccy}&to_ccy=${to_ccy}&amount=${amount}`
+    const url = `${API_BASE_URL}/currency-exchange/latest?from_ccy=${from_ccy}&to_ccy=${to_ccy}&amount=${amount}`
 
     fetch(url)
         .then(response => {

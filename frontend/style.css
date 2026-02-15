@@ -63,7 +63,7 @@ div.align-end {
     display: flex;
     align-items: end;
 }
-section.container-converter {
+main {
     display: flex;
     flex-direction: column;
     background-color: #FFFFFF;

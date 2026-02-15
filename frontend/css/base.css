@@ -1,6 +1,7 @@
 /* Text Styles Setting */
 @import url('https://fonts.googleapis.com');
 
+h2,
 .h2 {
     font-family: 'Noto Serif TC', serif;
     font-weight: bold;
@@ -12,4 +13,10 @@
     font-weight: bold;
     font-size: 20px;
     line-height: 1.4;
+}
+.body-bold {
+    font-family: 'Noto Sans TC', sans;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1.5;
 }

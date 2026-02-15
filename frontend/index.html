@@ -8,20 +8,21 @@
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/layout.css">
     <link rel="stylesheet" type="text/css" href="css/pages/currency.css">
+    <link rel="stylesheet" type="text/css" href="css/pages/weather.css">
 </head>
 <body>
     <header>
-        <button class="navigation-pill h2">Currency</button>
-        <button class="navigation-pill h2">Weather</button>
-        <button class="navigation-pill h2">News</button>
-        <button class="navigation-pill h2">My Notes</button>
+        <button class="navigation-pill h2" id="btn-currency" data-page-id="currency-page">Currency</button>
+        <button class="navigation-pill h2" id="btn-weather" data-page-id="weather-page">Weather</button>
+        <button class="navigation-pill h2" id="btn-news" data-page-id="news-page">News</button>
+        <button class="navigation-pill h2" id="btn-notes" data-page-id="notes-page">My Notes</button>
     </header>
 
     <main id="main-page-container">
 
     </main>
 
-    <!-- currency converter -->
+    <!-- currency converter page -->
     <template id="currency-page">
         <div class="container-currency">
             <div class="inner-col">
@@ -53,6 +54,53 @@
             </div>
             <div class="inner-col" id="container-result">
                 <p class="title" id="p-result"></p>
+            </div>
+        </div>
+    </template>
+
+    <!-- weather page -->
+    <template id="weather-page">
+        <div class="container-weather">
+            <div class="container-current-weather align-center">
+                <!-- <button>try</button> -->
+                <h2>Taipei: 25°</h2>
+            </div>
+            <div class="inner-row container-detail-info">
+                <div class="inner-col">
+                    <h2>Weather Details</h2>
+                    <div class="inner-row container-details">
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">Feels Like</p>
+                            <p class="title">25°C</p>
+                        </div>
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">PoP</p>
+                            <p class="title">2%</p>
+                        </div>
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">Humidity</p>
+                            <p class="title">60%</p>
+                        </div>
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">UV</p>
+                            <p class="title">1</p>
+                        </div>
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">Visibility</p>
+                            <p class="title">9.66 km</p>
+                        </div>
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">AQI</p>
+                            <p class="title">65</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="inner-col">
+                    <h2>Future Days</h2>
+                    <div class="container-future-days">
+
+                    </div>
+                </div>
             </div>
         </div>
     </template>

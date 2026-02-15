@@ -1,8 +1,10 @@
 import { CurrencyPageHandler } from "./pages/currency.js";
+import { WeatherHandler } from "./pages/weather.js";
 
 let currentPageID = '';
 const pages = {
-    'currency-page': CurrencyPageHandler
+    'currency-page': CurrencyPageHandler,
+    'weather-page': WeatherHandler,
 };
 
 const pageContainer = document.getElementById('main-page-container');
@@ -37,3 +39,12 @@ function getEventHandlerFunctionName(eventType) {
         }
     });
 });
+
+const currencyNavButton = document.getElementById('btn-currency');
+const weatherNavButton = document.getElementById('btn-weather');
+
+[currencyNavButton, weatherNavButton].forEach(navButton => {
+    navButton.addEventListener('click', (e) => {
+        router(navButton?.dataset.pageId);
+    });
+})

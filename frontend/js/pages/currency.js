@@ -49,7 +49,7 @@ export const CurrencyPageHandler = {
         const fromCcy = selectFromCcy.value;
         const toCcy = selectToCcy.value;
 
-        const url = `${API_BASE_URL}/currency-exchange/latest?from_ccy=${fromCcy}&to_ccy=${toCcy}&amount=${amount}`
+        const url = `${API_BASE_URL}/api/currency/latest?from_ccy=${fromCcy}&to_ccy=${toCcy}&amount=${amount}`
 
         fetch(url)
             .then(response => {

@@ -1,0 +1,57 @@
+/* Class Elements Setting */
+.container-currency {
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    margin: 0px 100px 0px 100px;
+    padding: 20px;
+    gap: 50px;
+}
+
+.container-currency select.currency-type {
+    height: 45px;
+    background-color: #F4F0EB;
+    width: 100%;
+    text-align: center;
+    border: 1px solid transparent;
+    border-radius: 10px;
+}
+
+/* Unique Elements Setting (with ID) */
+.container-currency input#input-amount {
+    text-align: center;
+    height: 60px;
+    background-color: #F4F0EB;
+    border: 1px solid transparent;
+    /* border: none; */
+    border-radius: 10px;
+}
+.container-currency button#btn-exchange {
+    /* height: 44px;
+    width: 46px; */
+    border: none;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    padding: 5px 10px 5px 10px;
+    cursor: pointer;
+}
+.container-currency button#btn-exchange:hover {
+    background-color: #F4F0EB;
+}
+.container-currency button#btn-exchange:active {
+    transform: scale(0.95);
+}
+.container-currency div#container-result {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    height: 60px;
+    background-color: #F4F0EB;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+.container-currency input#input-amount:hover,
+.container-currency select.currency-type:hover{
+    border: 1px solid #000000;
+}

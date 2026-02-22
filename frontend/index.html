@@ -4,48 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Traveling Helper</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <link rel="stylesheet" type="text/css" href="css/pages/currency.css">
+    <link rel="stylesheet" type="text/css" href="css/pages/weather.css">
 </head>
 <body>
     <header>
-        <button class="navigation-pill h2">Currency</button>
-        <button class="navigation-pill h2">Weather</button>
-        <button class="navigation-pill h2">News</button>
-        <button class="navigation-pill h2">My Notes</button>
+        <button class="navigation-pill h2" id="btn-currency" data-page-id="currency-page">Currency</button>
+        <button class="navigation-pill h2" id="btn-weather" data-page-id="weather-page">Weather</button>
+        <button class="navigation-pill h2" id="btn-news" data-page-id="news-page">News</button>
+        <button class="navigation-pill h2" id="btn-notes" data-page-id="notes-page">My Notes</button>
     </header>
-    <section class="container-converter">
-        <div class="inner-col">
-            <p class="title">Amount</p>
-            <input id="input-amount" class="title" type="number" step="any" placeholder="Input a number">
-        </div>
-        <div class="inner-row align-end">
-            <div class="inner-col">
-                <p class="title">From</p>
-                <select id="select-from-ccy" class="currency-type title" name="from-ccy">
-                    <option value="twd">NTD</option>
-                    <option value="usd">USD</option>
-                    <option value="jpy">JPY</option>
-                    <option value="krw">KRW</option>
-                </select>
-            </div>
-            <button id="btn-exchange">
-                <img src="./assets/exchange-icon.png">
-            </button>
-            <div class="inner-col">
-                <p class="title">To</p>
-                <select id="select-to-ccy" class="currency-type title" name="to-ccy">
-                    <option value="twd">NTD</option>
-                    <option value="usd">USD</option>
-                    <option value="jpy">JPY</option>
-                    <option value="krw">KRW</option>
-                </select>
-            </div>
-        </div>
-        <div class="inner-col" id="container-result">
-            <p class="title" id="p-result"></p>
-        </div>
-    </section>
 
-    <script src="script.js"></script>
+    <main id="main-page-container">
+
+    </main>
+
+    <!-- currency converter page -->
+    <template id="currency-page">
+        <div class="container-currency">
+            <div class="inner-col">
+                <p class="title">Amount</p>
+                <input id="input-amount" class="title" type="number" step="any" placeholder="Input a number" data-action="debouncedCompute">
+            </div>
+            <div class="inner-row align-end">
+                <div class="inner-col">
+                    <p class="title">From</p>
+                    <select id="select-from-ccy" class="currency-type title" name="from-ccy" data-action="debouncedCompute">
+                        <option value="twd">NTD</option>
+                        <option value="usd">USD</option>
+                        <option value="jpy">JPY</option>
+                        <option value="krw">KRW</option>
+                    </select>
+                </div>
+                <button id="btn-exchange" data-action="exchange">
+                    <img src="./assets/exchange-icon.png">
+                </button>
+                <div class="inner-col">
+                    <p class="title">To</p>
+                    <select id="select-to-ccy" class="currency-type title" name="to-ccy" data-action="debouncedCompute">
+                        <option value="twd">NTD</option>
+                        <option value="usd">USD</option>
+                        <option value="jpy">JPY</option>
+                        <option value="krw">KRW</option>
+                    </select>
+                </div>
+            </div>
+            <div class="inner-col" id="container-result">
+                <p class="title" id="p-result"></p>
+            </div>
+        </div>
+    </template>
+
+    <!-- weather page -->
+    <template id="weather-page">
+        <div class="container-weather">
+            <div class="container-current-weather align-center">
+                <!-- <button>try</button> -->
+                <h2>Taipei: 25°</h2>
+            </div>
+            <div class="inner-row container-detail-info">
+                <div class="inner-col">
+                    <h2>Weather Details</h2>
+                    <div class="inner-row container-details">
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">Feels Like</p>
+                            <p class="title">25°C</p>
+                        </div>
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">PoP</p>
+                            <p class="title">2%</p>
+                        </div>
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">Humidity</p>
+                            <p class="title">60%</p>
+                        </div>
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">UV</p>
+                            <p class="title">1</p>
+                        </div>
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">Visibility</p>
+                            <p class="title">9.66 km</p>
+                        </div>
+                        <div class="inner-col align-center container-detail">
+                            <p class="body-bold">AQI</p>
+                            <p class="title">65</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="inner-col">
+                    <h2>Future Days</h2>
+                    <div class="container-future-days">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="js/app.js" type="module"></script>
 </body>
 </html>

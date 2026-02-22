@@ -1,46 +1,17 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import APIRouter
 import httpx
-from pydantic import BaseModel
-
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from pprint import pprint
 
-class Currency(BaseModel):
-    code: str
-    country: str | None = None
-    name: str | None = None
-    symbol: str | None = None
+from .schema import Currency, CurrencyList, ConversionResult
 
-class CurrencyList(BaseModel):
-    items: list[Currency]
-    count: int | None = None
+router = APIRouter()
 
-class ConversionResult(BaseModel):
-    amount: float
-    exchange_rate: float | None = None
-
-app = FastAPI()
-
-origins = [
-    "http://127.0.0.1:5500",
-    "http://localhost:5500",
-    "https://traveling-helper.vercel.app" # Vercel
-]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins = origins,
-    allow_credentials = True,
-    allow_methods = ["*"],
-    allow_headers = ["*"]
-)
-
-@app.get("/")
+@router.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"Hello": "Currency Router"}
 
-@app.get("/currency-exchange/currency-list")
+@router.get("/currency-list")
 async def get_support_currency():
     url = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json"
 
@@ -54,7 +25,7 @@ async def get_support_currency():
         return currencyList
 
 # GET: /currency-exchange/latest?from_ccy={}&to_ccy={}&amount={}
-@app.get("/currency-exchange/latest")
+@router.get("/latest")
 async def convert_currency(from_ccy: str, to_ccy: str, amount: float):
     if from_ccy == to_ccy:
         return ConversionResult(
@@ -79,7 +50,7 @@ async def convert_currency(from_ccy: str, to_ccy: str, amount: float):
         )
     
 # GET: /currency-exchange/history?from_ccy={}&to_ccy={}&amount={}
-@app.get("/currency-exchange/history")
+@router.get("/history")
 async def exchange_rate_history(from_ccy: str, to_ccy: str, amount: float):
     # span: 1 week / 2 month / half year / 1 year / 2 years
 

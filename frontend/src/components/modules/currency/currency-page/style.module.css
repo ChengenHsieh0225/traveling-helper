@@ -1,0 +1,57 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  height: 100%;
+  overflow: hidden;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  padding: 10px 20px;
+
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.exchangeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.historyContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.timespansContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5px;
+}
+
+.currencyRowContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  justify-content: space-between;
+}
+
+.input, .output {
+  padding: 5px 10px;
+  width: 120px;
+  min-height: 34px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--color-gray-3-transparent);
+}

@@ -1,0 +1,25 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--color-white);
+}
+
+.btnContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.imgBase {
+  height: 100%;
+  object-fit: contain;
+}
+
+.btnBase {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: var(--color-white);
+}

@@ -3,7 +3,7 @@
 }
 
 .btnInactive {
-  background-color: var(--color-white);
+  background-color: var(--color-transparent);
 }
 
 .btnBase {
@@ -12,7 +12,15 @@
   border: none;
   cursor: pointer;
   padding: 5px;
-  width: 62.5px;
+  flex-grow: 1;
+}
+
+.btnBaseWithoutPadding {
+  display: flex;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  padding: 0px;
 }
 
 /* Border */

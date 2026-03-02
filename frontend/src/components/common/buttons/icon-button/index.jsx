@@ -1,11 +1,11 @@
 import styles from './style.module.css'
 import { kebabToPascal } from '../../../../utils/stringConversion';
 
-function IconButton({ height, isActive, borderStyle, imgSrcActive, imgSrcInactive }) {
+function IconButton({ height, isActive, borderStyle, imgSrcActive, imgSrcInactive, noPadding, noBackground }) {
 
   const buttonClasses = [
-    styles.btnBase,
-    isActive ? styles.btnActive : styles.btnInactive,
+    noPadding ? styles.btnBaseWithoutPadding : styles.btnBase,
+    isActive ? (!noBackground ? styles.btnActive : styles.btnInactive) : styles.btnInactive,
     styles[`btnBorder${kebabToPascal(borderStyle)}`]
   ].filter(Boolean).join(' ');
 
@@ -14,7 +14,7 @@ function IconButton({ height, isActive, borderStyle, imgSrcActive, imgSrcInactiv
   // console.log(buttonClasses);
 
   return (
-    <div>
+    <div className="align-row">
       <button className={buttonClasses} style={{ height: height}}>
         <div className={styles.imgContainer}>
           <img className={styles.imgBase} src={imgSrc}></img>

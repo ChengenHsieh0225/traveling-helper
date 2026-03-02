@@ -1,0 +1,12 @@
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+}
+
+.iconContainer {
+  display: flex;
+  width: 20px;
+  height: 20px;
+}

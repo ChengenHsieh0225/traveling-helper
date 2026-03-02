@@ -1,21 +1,13 @@
 import "./App.css";
-import TextButton from "./components/common/buttons/text-button";
-import IconButton from "./components/common/buttons/icon-button";
+import WeatherPage from "./components/modules/weather/weather-page";
+// import Header from "./components/common/header";
 
 function App() {
   return (
-    <>
-      <TextButton isActive="true" fontContent="現在" fontStyle="body-bold" borderStyle="semi"></TextButton>
-      <TextButton isActive="true" fontContent="24 小時" fontStyle="caption" borderStyle="round"></TextButton>
-      <IconButton 
-        height="32px"
-        isActive="true"
-        borderStyle="round"
-        imgSrcActive="/assets/cloud-filled.svg"
-        imgSrcInactive="/assets/cloud-outlined.svg"
-      >
-      </IconButton>
-    </>
+    <div className="app-container">
+      <WeatherPage></WeatherPage>
+      {/* <Header pageTitle="嘗試頁面"></Header> */}
+    </div>
   );
 }
 

@@ -4,6 +4,7 @@ import { kebabToPascal } from '../../../../utils/stringConversion';
 function TextButton({ isActive, fontStyle, borderStyle, fontContent }) {
 
   const buttonClasses = [
+    fontStyle,
     styles.btnBase,
     isActive ? styles.btnActive : styles.btnInactive,
     styles[`btn${kebabToPascal(fontStyle)}`],

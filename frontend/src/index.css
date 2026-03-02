@@ -1,0 +1,53 @@
+/* Text Styles Setting */
+@import url("https://fonts.googleapis.com");
+
+:root {
+  /* Brand Color */
+  --color-black: #000000;
+  --color-gray-1: #323232;
+  --color-gray-3: #d9d9d9;
+  --color-gray-3-transparent: #d9d9d999;
+  --color-gray-6: #F2F2F7;
+  --color-white: #FFFFFF;
+
+  /* Font Typography */
+  --font-main: "Noto Sans TC", sans;
+}
+
+/* Font Styles */
+h2, .h2 {
+  font-family: var(--font-main);
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 1.5;
+}
+.title {
+  font-family: var(--font-main);
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 1.4;
+}
+.body-bold {
+  font-family: var(--font-main);
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.body-medium {
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.body-regular {
+  font-family: var(--font-main);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.caption {
+  font-family: var(--font-main);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+}

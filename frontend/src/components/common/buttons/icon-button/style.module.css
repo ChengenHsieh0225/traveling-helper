@@ -1,0 +1,42 @@
+.btnActive {
+  background-color: var(--color-gray-3-transparent);
+}
+
+.btnInactive {
+  background-color: var(--color-white);
+}
+
+.btnBase {
+  display: flex;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  width: 62.5px;
+}
+
+/* Border */
+.btnBorderSquare {
+  border-radius: 0px;
+}
+.btnBorderSemi {
+  border-radius: 5px;
+}
+.btnBorderRound {
+  border-radius: 15px;
+}
+.btnBorderCircle {
+  border-radius: 9999px;
+}
+
+/* Image container */
+.imgContainer {
+  aspect-ratio: 1 / 1;
+}
+
+/* Image */
+.imgBase {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

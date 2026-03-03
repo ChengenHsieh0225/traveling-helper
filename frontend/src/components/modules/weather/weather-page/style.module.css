@@ -1,18 +1,10 @@
-.pageContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  overflow: hidden;
-}
-
 .contentContainer {
   display: flex;
   flex-direction: column;
   gap: 30px;
   padding: 10px 20px;
 
-  /* flex: 1; */
+  flex: 1;
   overflow-y: auto;
   scrollbar-width: none;
 }

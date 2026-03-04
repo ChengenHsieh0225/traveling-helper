@@ -4,6 +4,8 @@ import IconButton from "../../../common/buttons/icon-button";
 import CurrencySelector from "../currency-selector";
 import MyLineChart from "../../../common/charts/line-chart";
 
+import { useCurrencyConverter } from "../../../../hooks/currency/useCurrencyConverter";
+
 const data = [
   { time: "01-01", rate: 0.26 },
   { time: "01-08", rate: 0.27 },
@@ -16,14 +18,29 @@ const data = [
 ];
 
 function CurrencyPage() {
+
+  const {
+    amount, setAmount,
+    result,
+    fromCurrency, setFromCurrency,
+    toCurrency, setToCurrency,
+    handleSwap,
+  } = useCurrencyConverter();
+
   return (
     <div className={styles.contentContainer}>
       <div className={styles.exchangeContainer}>
         <div className={styles.currencyRowContainer}>
-          <CurrencySelector></CurrencySelector>
+          <CurrencySelector
+            value={fromCurrency}
+            onChange={setFromCurrency}
+          ></CurrencySelector>
           <input
             className={`body-bold ${styles.input}`}
             placeholder="請輸入數值"
+            type="nuber"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
           ></input>
         </div>
         <IconButton
@@ -32,10 +49,14 @@ function CurrencyPage() {
           imgSrcInactive="/assets/exchange.svg"
           noPadding="true"
           noBackground="true"
+          onClick={handleSwap}
         ></IconButton>
         <div className={styles.currencyRowContainer}>
-          <CurrencySelector></CurrencySelector>
-          <p className={`body-bold ${styles.output}`}></p>
+          <CurrencySelector
+            value={toCurrency}
+            onChange={setToCurrency}
+          ></CurrencySelector>
+          <p className={`body-bold ${styles.output}`}>{result}</p>
         </div>
       </div>
       <div className={styles.historyContainer}>

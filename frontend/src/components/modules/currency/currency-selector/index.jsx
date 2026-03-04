@@ -1,17 +1,28 @@
-import styles from "./style.module.css";
+import { CircleFlag } from 'react-circle-flags';
 
-function CurrencySelector() {
+import styles from "./style.module.css";
+import { SUPPORTED_CURRENCIES } from "../../../../constants/currencies";
+
+function CurrencySelector({ value, onChange }) {
   return (
     <div className={styles.outerContainer}>
-      <div className={styles.iconContainer}>
+      <CircleFlag
+        countryCode={SUPPORTED_CURRENCIES[value].iconCode}
+        // countryCode='tw'
+        height="24px"
+        width="24px"
+      ></CircleFlag>
+      {/* <div className={styles.iconContainer}>
         <img className="img-fit" src="https://hatscripts.github.io/circle-flags/flags/tw.svg"></img>
-      </div>
-      <select className={`body-bold ${styles.select}`}>
-        <option>新台幣</option>
-        <option>日幣</option>
-        <option>韓元</option>
-        <option>歐元</option>
-        <option>美金</option>
+      </div> */}
+      <select 
+        className={`body-bold ${styles.select}`}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        {Object.entries(SUPPORTED_CURRENCIES).map(([code, info]) => {
+          return <option key={code} value={code}>{info.chName}</option>
+        })}
       </select>
     </div>
   );

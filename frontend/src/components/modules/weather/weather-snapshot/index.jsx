@@ -11,7 +11,7 @@ function WeatherSnapshot({ time, weather, temp, pop }) {
         <p className="body-bold">{temp}</p>
       </div>
       <div className={styles.popContainer}>
-        <div className={styles.dropletIconContainer}>
+        <div className={styles.dropletContainer}>
           <img className="img-fit" src="/assets/droplet.svg"></img>
         </div>
         <p className="caption">{pop}</p>

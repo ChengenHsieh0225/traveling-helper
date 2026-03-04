@@ -64,9 +64,9 @@ export function useCurrencyConverter() {
       .then((data) => {
         // console.log(data.amount);
         setRateHistory(
-          Object.entries(data).map(([time, rate]) => ({
-            'time': time,
-            '匯率': rate
+          data.map((element) => ({
+            'time': element.time,
+            '匯率': element.rate
           }))
         );
       })

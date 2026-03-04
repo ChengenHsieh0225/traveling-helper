@@ -4,6 +4,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from .schema import Currency, CurrencyList, ConversionResult
+from . import service
 
 router = APIRouter()
 
@@ -49,40 +50,18 @@ async def convert_currency(from_ccy: str, to_ccy: str, amount: float):
             exchange_rate = rate
         )
     
-# GET: /currency-exchange/history?from_ccy={}&to_ccy={}&amount={}
+# GET: /currency-exchange/history?from_ccy={}&to_ccy={}&timespan={}
 @router.get("/history")
-async def exchange_rate_history(from_ccy: str, to_ccy: str, amount: float):
-    # span: 1 week / 2 month / half year / 1 year / 2 years
+async def get_rate_history(from_ccy: str, to_ccy: str, timespan: str):
+    return await service.get_rate_history(from_ccy=from_ccy, to_ccy=to_ccy, timespan=timespan)
 
-    today = datetime.now()
-    latest_date = today - relativedelta(days=1)
+# GET: /currency-exchange/history?from_ccy={}&to_ccy={}
+@router.get("/history/allspan")
+async def get_all_rate_histories(from_ccy: str, to_ccy: str):
+    valid_span = ['1w', '2m', '6m', '1y', '2y']
 
-    dates = {}
-    dates["1 week"] = [(latest_date - relativedelta(days=i)).strftime("%Y-%m-%d") for i in range(7)]
-    dates["2 months"] = [(latest_date - relativedelta(weeks=i)).strftime("%Y-%m-%d") for i in range(8)]
-    dates["6 months"] = [(latest_date - relativedelta(weeks=2*i)).strftime("%Y-%m-%d") for i in range(12)]
-    dates["1 year"] = [(latest_date - relativedelta(months=i)).strftime("%Y-%m-%d") for i in range(12)]
-    dates["2 years"] = [(latest_date - relativedelta(months=2*i)).strftime("%Y-%m-%d") for i in range(12)]
+    all_histories = {}
+    for span in valid_span:
+        all_histories[span] = await service.get_rate_history(from_ccy=from_ccy, to_ccy=to_ccy, timespan=span)
 
-    date_to_rate = {}
-
-    for span in dates:
-        for date in dates[span]:
-            if date not in date_to_rate:
-                url = f"https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@{date}/v1/currencies/{from_ccy}.json"
-                async with httpx.AsyncClient() as client:
-                    response = await client.get(url)
-                    data = response.json()
-                    rate = data.get(from_ccy).get(to_ccy)
-                    date_to_rate[date] = rate
-    
-    history = {}
-    for span in dates:
-        history[span] = {}
-        for date in dates[span]:
-            history[span][date] = {}
-            history[span][date]["rate"] = date_to_rate[date]
-            history[span][date]["amount"] = round(amount * rate, 5)
-
-    # pprint(history)
-    return 1
+    return all_histories

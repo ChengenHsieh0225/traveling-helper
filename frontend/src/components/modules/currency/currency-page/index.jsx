@@ -25,6 +25,8 @@ function CurrencyPage() {
     fromCurrency, setFromCurrency,
     toCurrency, setToCurrency,
     handleSwap,
+    timespan, setTimespan,
+    rateHistory
   } = useCurrencyConverter();
 
   return (
@@ -62,36 +64,45 @@ function CurrencyPage() {
       <div className={styles.historyContainer}>
         <div className={styles.timespansContainer}>
           <TextButton
+            isActive={timespan === '1 週'}
             fontContent="1 週"
             fontStyle="caption"
             borderStyle="round"
+            onClick={setTimespan}
           ></TextButton>
           <TextButton
-            isActive="true"
+            isActive={timespan === '2 個月'}
             fontContent="2 個月"
             fontStyle="caption"
             borderStyle="round"
+            onClick={setTimespan}
           ></TextButton>
           <TextButton
+            isActive={timespan === '6 個月'}
             fontContent="6 個月"
             fontStyle="caption"
             borderStyle="round"
+            onClick={setTimespan}
           ></TextButton>
           <TextButton
+            isActive={timespan === '1 年'}
             fontContent="1 年"
             fontStyle="caption"
             borderStyle="round"
+            onClick={setTimespan}
           ></TextButton>
           <TextButton
+            isActive={timespan === '2 年'}
             fontContent="2 年"
             fontStyle="caption"
             borderStyle="round"
+            onClick={setTimespan}
           ></TextButton>
         </div>
         <MyLineChart
-          data={data}
+          data={rateHistory}
           xKey="time"
-          yKey="rate"
+          yKey="匯率"
           height={180}
         ></MyLineChart>
       </div>

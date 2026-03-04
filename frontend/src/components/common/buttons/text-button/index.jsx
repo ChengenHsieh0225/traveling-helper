@@ -1,7 +1,7 @@
 import styles from './style.module.css'
 import { kebabToPascal } from '../../../../utils/stringConversion';
 
-function TextButton({ isActive, fontStyle, borderStyle, fontContent }) {
+function TextButton({ isActive, fontStyle, borderStyle, fontContent, onClick }) {
 
   const buttonClasses = [
     fontStyle,
@@ -15,6 +15,7 @@ function TextButton({ isActive, fontStyle, borderStyle, fontContent }) {
     <div>
       <button 
         className={buttonClasses}
+        onClick={() => onClick(fontContent)}
       >
         {fontContent}
       </button>

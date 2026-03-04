@@ -53,7 +53,7 @@ export function useCurrencyConverter() {
       });
   };
   const fetchHistory = async () => {
-    console.log(historyUrl);
+    // console.log(historyUrl);
     fetch(historyUrl)
       .then((response) => {
         if (!response.ok) {
@@ -76,16 +76,16 @@ export function useCurrencyConverter() {
   }
 
   useEffect(() => {
-    const timer2 = setTimeout(fetchHistory, 300);
     if (isNumeric(amount)) {
-      const timer1 = setTimeout(fetchExchange, 300); // Debounce
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-      }
+      const timer = setTimeout(fetchExchange, 300); // Debounce
+      return () => clearTimeout(timer);
     }
-    else return () => clearTimeout(timer2);
-  }, [amount, fromCurrency, toCurrency, timespan]);
+  }, [amount, fromCurrency, toCurrency]);
+
+  useEffect(() => {
+    const timer = setTimeout(fetchHistory, 300);
+    return () => clearTimeout(timer);
+  }, [fromCurrency, toCurrency, timespan])
 
   const handleSwap = () => {
     setFromCurrency(toCurrency);

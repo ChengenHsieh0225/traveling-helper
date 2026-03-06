@@ -1,20 +1,20 @@
 from fastapi import APIRouter
 import httpx
 
+from . import service
+from .schema import WeatherDetail
+
 router = APIRouter()
+ 
+@router.get("/details")
+async def get_weather_details(city: str, countryCode: str = None):
+    cityInfo = await service.get_coordinates(city)
+    weatherInfo = await service.get_weather_info(latitude=cityInfo.latitude, longitude=cityInfo.longitude)
+    airQuality = await service.get_air_quality(latitude=cityInfo.latitude, longitude=cityInfo.longitude)
 
-@router.get("/")
-async def get_weather():
-    url = "https://api.open-meteo.com/v1/forecast"
-    params = {
-        "latitude": 25.062,
-        "longitude": 121.457,
-        "hourly": ["temperature_2m", "weather_code"],
-        "timezone": "auto",
-        "forecast_days": 1,
-    }
+    return WeatherDetail(**weatherInfo.model_dump(), **airQuality.model_dump())
 
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url, params=params)
-        data = response.json()
-        return data
+@router.get("/forcast")
+async def get_weather_forecast(city: str, countryCode: str = None, timespan: str = '1d'):
+    cityInfo = await service.get_coordinates(city)
+    return await service.get_weather_forecast(latitude=cityInfo.latitude, longitude=cityInfo.longitude, timespan=timespan)

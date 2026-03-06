@@ -14,7 +14,7 @@ async def get_weather_details(city: str, countryCode: str = None):
 
     return WeatherDetail(**weatherInfo.model_dump(), **airQuality.model_dump())
 
-@router.get("/forcast")
+@router.get("/forecast")
 async def get_weather_forecast(city: str, countryCode: str = None, timespan: str = '1d'):
     cityInfo = await service.get_coordinates(city)
     return await service.get_weather_forecast(latitude=cityInfo.latitude, longitude=cityInfo.longitude, timespan=timespan)

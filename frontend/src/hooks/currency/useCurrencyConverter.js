@@ -1,29 +1,6 @@
 import { useState, useEffect } from "react";
-import { toLowerCase } from "../../utils/stringConversion";
+import { currencyApi } from "../../api/currency";
 import { isNumeric } from "../../utils/numberProcessing";
-
-const API_BASE_URL =
-  window.location.hostname === "localhost" ||
-  window.location.hostname === "127.0.0.1"
-    ? "http://127.0.0.1:8000"
-    : "https://traveling-helper.onrender.com";
-
-function toTimespanAbbr(timespan) {
-  const mapping = {
-    '1 週': '1w',
-    '2 個月': '2m',
-    '6 個月': '6m',
-    '1 年': '1y',
-    '2 年': '2y'
-  };
-
-  if (timespan in mapping) {
-    return mapping[timespan];
-  }
-  else {
-    return timespan;
-  }
-}
 
 export function useCurrencyConverter() {
   const [amount, setAmount] = useState('');
@@ -33,46 +10,22 @@ export function useCurrencyConverter() {
   const [timespan, setTimespan] = useState('1 週');
   const [rateHistory, setRateHistory] = useState([]);
 
-  const exchangeUrl = `${API_BASE_URL}/api/currency/latest?from_ccy=${toLowerCase(fromCurrency)}&to_ccy=${toLowerCase(toCurrency)}&amount=${amount}`;
-  const historyUrl = `${API_BASE_URL}/api/currency/history?from_ccy=${toLowerCase(fromCurrency)}&to_ccy=${toLowerCase(toCurrency)}&timespan=${toTimespanAbbr(timespan)}`;
-
   const fetchExchange = async () => {
-    fetch(exchangeUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("fetch failed!!");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // console.log(data.amount);
-        setResult(data.amount);
-      })
-      .catch((error) => {
-        console.error("error: ", error);
-      });
-  };
+    try {
+      const exchangeResult = await currencyApi.getExchangeResult(fromCurrency ,toCurrency, amount);
+      setResult(exchangeResult);
+    } catch (error) {
+      console.error("[Fetch Exchange Failed]: ", error);
+    }
+  }
+
   const fetchHistory = async () => {
-    // console.log(historyUrl);
-    fetch(historyUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("fetch failed!!");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // console.log(data.amount);
-        setRateHistory(
-          data.map((element) => ({
-            'time': element.time,
-            '匯率': element.rate
-          }))
-        );
-      })
-      .catch((error) => {
-        console.error("error: ", error);
-      });
+    try {
+      const historyData = await currencyApi.getRateHistory(fromCurrency, toCurrency, timespan);
+      setRateHistory(historyData);
+    } catch (error) {
+      console.error("[Fetch Rate History Failed]: ", error);
+    }
   }
 
   useEffect(() => {

@@ -1,0 +1,27 @@
+.outerContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  gap: 12px;
+}
+
+.iconContainer {
+  display: flex;
+  width: 24px;
+  height: 24px;
+}
+
+.select {
+  border: none;
+  background-color: var(--color-transparent);
+
+  appearance: none;
+  background-image: url('/assets/down-arrow.svg');
+  background-repeat: no-repeat;
+
+  background-position: calc(100% - 0px) center; 
+  background-size: 12px;
+  padding-right: 24px;
+  /* padding: 8px 40px 8px 12px; */
+}

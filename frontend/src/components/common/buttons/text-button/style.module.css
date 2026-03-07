@@ -1,0 +1,39 @@
+.btnActive {
+  background-color: var(--color-gray-3-transparent);
+}
+
+.btnInactive {
+  background-color: var(--color-transparent);
+}
+
+.btnBase {
+  border: none;
+  cursor: pointer;
+}
+
+/* Padding (depend on font style) */
+.btnH2 {
+  padding: 5px 10px;
+}
+
+.btnBodyBold, .btnBodyMedium, .btnBodyRegular {
+  padding: 5px 10px;
+}
+
+.btnCaption {
+  padding: 3px 10px;
+}
+
+/* Border */
+.btnBorderSquare {
+  border-radius: 0px;
+}
+.btnBorderSemi {
+  border-radius: 5px;
+}
+.btnBorderRound {
+  border-radius: 15px;
+}
+.btnBorderCircle {
+  border-radius: 9999px;
+}

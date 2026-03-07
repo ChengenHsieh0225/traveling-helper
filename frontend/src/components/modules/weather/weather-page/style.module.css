@@ -1,0 +1,81 @@
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 10px 20px;
+
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.overviewContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px 25px;
+  background-color: var(--color-gray-6);
+  border-radius: 15px;
+}
+
+.locationContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  background-color: var(--color-gray-6);
+  align-items: center;
+}
+
+.weatherContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: end;
+}
+
+.tempContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: end;
+}
+
+.weatherIconContainer {
+  display: flex;
+  width: 50px;
+  height: 50px;
+  padding-bottom: 4px; /* Depend on the text line height */
+}
+
+.forcastContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.timespanContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.snapshotContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  max-width: 100%;
+
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.detailContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 15px;
+  padding: 15px 30px;
+  background-color: var(--color-gray-6);
+}

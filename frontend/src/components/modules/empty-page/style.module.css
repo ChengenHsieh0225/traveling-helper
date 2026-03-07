@@ -1,0 +1,12 @@
+.contentContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 10px 20px;
+  
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }

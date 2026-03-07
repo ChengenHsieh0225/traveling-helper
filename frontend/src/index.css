@@ -1,0 +1,96 @@
+/* Text Styles Setting */
+@import url("https://fonts.googleapis.com");
+
+:root {
+  /* Brand Color */
+  --color-black: #000000;
+  --color-gray-1: #323232;
+  --color-gray-3: #d9d9d9;
+  --color-gray-3-transparent: #d9d9d999;
+  --color-gray-6: #F2F2F7;
+  --color-gray-6-transparent: #F2F2F799;
+  --color-white: #FFFFFF;
+  --color-transparent: transparent;
+
+  /* Font Typography */
+  --font-main: "Noto Sans TC", sans;
+
+}
+
+/* Global Setting */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Font Styles */
+h2, .h2 {
+  font-family: var(--font-main);
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 1.5;
+}
+.title {
+  font-family: var(--font-main);
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 1.4;
+}
+.body-bold {
+  font-family: var(--font-main);
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.body-medium {
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.body-regular {
+  font-family: var(--font-main);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.caption {
+  font-family: var(--font-main);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Flex Layout */
+.align-row {
+  display: flex;
+  flex-direction: row;
+}
+.align-col {
+  display: flex;
+  flex-direction: column;
+}
+.align-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+.align-items-end {
+  display: flex;
+  align-items: end;
+}
+.align-items-center {
+  display: flex;
+  align-items: center;
+}
+
+/* Image Setting */
+.img-fit {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; 
+}
+.img-pos-bottom {
+  object-position: bottom;
+}

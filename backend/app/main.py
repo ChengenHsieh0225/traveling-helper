@@ -1,9 +1,25 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from domains.api import api_router
+from contextlib import asynccontextmanager
+from app.core import deps
+import httpx
 
-app = FastAPI()
+from app.api.api import api_router
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    deps._http_client = httpx.AsyncClient(
+        limits=httpx.Limits(
+            max_connections=20,
+            max_keepalive_connections=5
+        ),
+        timeout=20.0
+    )
+    yield
+    await deps._http_client.aclose()
+
+app = FastAPI(lifespan=lifespan)
 
 origins = [
     "http://127.0.0.1:5500",
@@ -21,5 +37,3 @@ app.add_middleware(
 )
 
 app.include_router(api_router, prefix='/api')
-
-

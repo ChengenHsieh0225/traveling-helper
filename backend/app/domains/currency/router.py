@@ -1,7 +1,6 @@
-from fastapi import APIRouter
-import httpx
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
+from fastapi import APIRouter, Depends
+from httpx import AsyncClient
+from app.core.deps import get_http_client
 
 from .schema import Currency, CurrencyList, ConversionResult
 from . import service
@@ -13,21 +12,20 @@ def read_root():
     return {"Hello": "Currency Router"}
 
 @router.get("/currency-list")
-async def get_support_currency():
+async def get_support_currency(client: AsyncClient = Depends(get_http_client)):
     url = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json"
 
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-        data = response.json()
-        items = [Currency(code=key, name=val) for key, val in data.items()]
-        count = len(data)
-        currencyList = CurrencyList(items=items, count=count)
+    response = await client.get(url)
+    data = response.json()
+    items = [Currency(code=key, name=val) for key, val in data.items()]
+    count = len(data)
+    currencyList = CurrencyList(items=items, count=count)
 
-        return currencyList
+    return currencyList
 
 # GET: /currency-exchange/latest?from_ccy={}&to_ccy={}&amount={}
 @router.get("/latest")
-async def convert_currency(from_ccy: str, to_ccy: str, amount: float):
+async def convert_currency(from_ccy: str, to_ccy: str, amount: float, client: AsyncClient = Depends(get_http_client)):
     if from_ccy == to_ccy:
         return ConversionResult(
             amount = amount,
@@ -36,32 +34,31 @@ async def convert_currency(from_ccy: str, to_ccy: str, amount: float):
     
     url = f"https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/{from_ccy}.json"
 
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-        data = response.json()
-        rate = float(f"{data.get(from_ccy).get(to_ccy):.5g}")
-        converted_amount = amount * rate
-        if converted_amount < 1e-4:
-            converted_amount = float(f"{converted_amount:.5g}")
-        else:
-            converted_amount = round(converted_amount, 4)
-        return ConversionResult(
-            amount = converted_amount,
-            exchange_rate = rate
-        )
+    response = await client.get(url)
+    data = response.json()
+    rate = float(f"{data.get(from_ccy).get(to_ccy):.5g}")
+    converted_amount = amount * rate
+    if converted_amount < 1e-4:
+        converted_amount = float(f"{converted_amount:.5g}")
+    else:
+        converted_amount = round(converted_amount, 4)
+    return ConversionResult(
+        amount = converted_amount,
+        exchange_rate = rate
+    )
     
 # GET: /currency-exchange/history?from_ccy={}&to_ccy={}&timespan={}
 @router.get("/history")
-async def get_rate_history(from_ccy: str, to_ccy: str, timespan: str):
-    return await service.get_rate_history(from_ccy=from_ccy, to_ccy=to_ccy, timespan=timespan)
+async def get_rate_history(from_ccy: str, to_ccy: str, timespan: str, client: AsyncClient = Depends(get_http_client)):
+    return await service.get_rate_history(from_ccy=from_ccy, to_ccy=to_ccy, timespan=timespan, client=client)
 
 # GET: /currency-exchange/history?from_ccy={}&to_ccy={}
 @router.get("/history/allspan")
-async def get_all_rate_histories(from_ccy: str, to_ccy: str):
+async def get_all_rate_histories(from_ccy: str, to_ccy: str, client: AsyncClient = Depends(get_http_client)):
     valid_span = ['1w', '2m', '6m', '1y', '2y']
 
     all_histories = {}
     for span in valid_span:
-        all_histories[span] = await service.get_rate_history(from_ccy=from_ccy, to_ccy=to_ccy, timespan=span)
+        all_histories[span] = await service.get_rate_history(from_ccy=from_ccy, to_ccy=to_ccy, timespan=span, client=client)
 
     return all_histories

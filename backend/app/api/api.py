@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from .currency.router import router as currency_router
-from .weather.router import router as weather_router
+from ..domains.currency.router import router as currency_router
+from ..domains.weather.router import router as weather_router
 
 api_router = APIRouter()
 

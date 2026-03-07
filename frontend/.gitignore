@@ -19,3 +19,6 @@ build/
 
 # Older code
 legacy
+
+# Vite Cache
+.vite

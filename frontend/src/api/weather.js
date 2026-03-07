@@ -31,7 +31,6 @@ const formatDetail = (data) => {
 const formatForecast = (data, timespan) => {
   return data.items.map(
     (item) => {
-      // console.log('item: ', item.weather_code);
       return {
         time: item.time,
         weather_code: item.weather_code,
@@ -50,7 +49,7 @@ export const weatherApi = {
     const data = await request(endpoint);
     return formatDetail(data);
   },
-  getForecast: async (city, countryCode = "", timespan = "24 小時") => {
+  getForecast: async (city, timespan, countryCode = "") => {
     // const endpoint = `/api/weather/forecast?city=${city}&countryCode=${countryCode}&timespan=${timespanMapping(timespan)}`;
     const endpoint = `/api/weather/forecast?city=${"New Taipei"}&timespan=${timespanMapping(timespan)}`;
     const data = await request(endpoint);

@@ -66,16 +66,18 @@ function WeatherPage({ isStarred }) {
       <div className={styles.forcastContainer}>
         <div className={styles.timespanContainer}>
           <TextButton
-            isActive="true"
+            isActive={timespan === '24 小時'}
             fontStyle="caption"
             borderStyle="round"
             fontContent="24 小時"
+            onClick={setTimespan}
           ></TextButton>
           <TextButton
-            // isActive="true"
+            isActive={timespan === '未來 7 天'}
             fontStyle="caption"
             borderStyle="round"
             fontContent="未來 7 天"
+            onClick={setTimespan}
           ></TextButton>
         </div>
         <div className={styles.snapshotContainer}>

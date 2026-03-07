@@ -33,5 +33,8 @@ export const getWeatherIconUrl = (weather_code, is_day) => {
 }
 export const transformTime = (time, timespan) => {
     if (timespan === '24 小時') return time.split('T')[1];
-    return time;
+    else {
+        const parts = time.split('-');
+        return parts.slice(1).join('/');
+    }
 }

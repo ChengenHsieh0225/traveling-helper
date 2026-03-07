@@ -84,9 +84,10 @@ function WeatherPage({ isStarred }) {
             <WeatherSnapshot
               key={`${city}-${item.time}`}
               time={transformTime(item.time, timespan)}
-              weather_code={item.weather_code}
+              weatherCode={item.weather_code}
               temp={item.temp}
               pop={item.pop}
+              isDay={item.is_day}
             ></WeatherSnapshot>
             );
           })}

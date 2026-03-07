@@ -1,13 +1,13 @@
 import styles from "./style.module.css";
 import { getWeatherIconUrl } from "../helper";
 
-function WeatherSnapshot({ time, weather_code, temp, pop }) {
+function WeatherSnapshot({ time, weatherCode: weatherCode, temp, pop, isDay }) {
   return (
     <div className={styles.snapshotContainer}>
       <p className="caption">{time}</p>
       <div className={styles.innerContainer}>
         <div className={styles.weatherIconContainer}>
-          <img className="img-fit" src={getWeatherIconUrl(weather_code)}></img>
+          <img className="img-fit" src={getWeatherIconUrl(weatherCode, isDay)}></img>
         </div>
         <p className="body-bold">{temp}°C</p>
       </div>

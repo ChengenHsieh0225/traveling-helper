@@ -30,6 +30,7 @@ class WeatherSnapshot(BaseModel):
     temp_max: float
     temp_min: float | None = None
     pop: float
+    is_day: bool | None = None
 
 class WeatherSnapshotList(BaseModel):
     items: list[WeatherSnapshot]

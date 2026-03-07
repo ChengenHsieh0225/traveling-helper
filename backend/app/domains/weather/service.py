@@ -76,7 +76,7 @@ async def get_weather_forecast(latitude: float, longitude: float, timespan: str,
         params = {
             "latitude": latitude,
             "longitude": longitude,
-            "hourly": ["precipitation_probability", "temperature_2m", "weather_code"],
+            "hourly": ["precipitation_probability", "temperature_2m", "weather_code", "is_day"],
             "timezone": "auto",
             "forecast_days": 2,
         }
@@ -87,7 +87,8 @@ async def get_weather_forecast(latitude: float, longitude: float, timespan: str,
                 time=hourly_data['time'][i],
                 weather_code=hourly_data['weather_code'][i],
                 temp_max=hourly_data['temperature_2m'][i],
-                pop=hourly_data['precipitation_probability'][i]
+                pop=hourly_data['precipitation_probability'][i],
+                is_day=hourly_data['is_day'][i]
             )
             snaphots.items.append(snapshot)
     elif timespan == '1w':

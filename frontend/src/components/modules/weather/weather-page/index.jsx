@@ -4,7 +4,19 @@ import IconButton from "../../../common/buttons/icon-button";
 import WeatherSnapshot from "../weather-snapshot";
 import WeatherDetail from "../weather-detail";
 
+import { useWeatherQuery } from "../../../../hooks/weather/useWeatherQuery";
+import { transformUvIndex, transformAQI, getWeatherDescription, getWeatherIconUrl, transformTime } from "../helper";
+
 function WeatherPage({ isStarred }) {
+
+  const {
+    city, setCity,
+    country, setCountry,
+    timespan, setTimespan,
+    weatherDetail,
+    forecast
+  } = useWeatherQuery();
+
   return (
     <div className={styles.contentContainer}>
       <div className={styles.overviewContainer}>
@@ -19,7 +31,7 @@ function WeatherPage({ isStarred }) {
               noPadding="true"
               noBackground="true"
             ></IconButton>
-            <p className="body-bold">新北市, 台灣</p>
+            <p className="body-bold">{city}, {country}</p>
             <IconButton
               height="25px"
               isActive="true"
@@ -40,14 +52,14 @@ function WeatherPage({ isStarred }) {
             <div className={styles.weatherIconContainer}>
               <img
                 className="img-fit img-pos-bottom"
-                src="/assets/cloud-filled.svg"
+                src={getWeatherIconUrl(weatherDetail.weather_code)}
               ></img>
             </div>
-            <p className="body-bold">多雲</p>
+            <p className="body-bold">{getWeatherDescription(weatherDetail.weather_code)}</p>
           </div>
           <div className={styles.tempContainer}>
-            <p className="h2">26°C</p>
-            <p className="body-bold">體感溫度 25°C</p>
+            <p className="h2">{weatherDetail.temp}°C</p>
+            <p className="body-bold">體感溫度 {weatherDetail.apparent_temp}°C</p>
           </div>
         </div>
       </div>
@@ -67,68 +79,49 @@ function WeatherPage({ isStarred }) {
           ></TextButton>
         </div>
         <div className={styles.snapshotContainer}>
-          <WeatherSnapshot
-            time="01:00"
-            weather="sunny"
-            temp="20°C"
-            pop="30%"
-          ></WeatherSnapshot>
-          <WeatherSnapshot
-            time="02:00"
-            weather="sunny"
-            temp="20°C"
-            pop="30%"
-          ></WeatherSnapshot>
-          <WeatherSnapshot
-            time="03:00"
-            weather="sunny"
-            temp="20°C"
-            pop="30%"
-          ></WeatherSnapshot>
-          <WeatherSnapshot
-            time="04:00"
-            weather="sunny"
-            temp="20°C"
-            pop="30%"
-          ></WeatherSnapshot>
-          <WeatherSnapshot
-            time="05:00"
-            weather="sunny"
-            temp="20°C"
-            pop="30%"
-          ></WeatherSnapshot>
+          {forecast.map((item) => {
+            return (
+            <WeatherSnapshot
+              key={`${city}-${item.time}`}
+              time={transformTime(item.time, timespan)}
+              weather_code={item.weather_code}
+              temp={item.temp}
+              pop={item.pop}
+            ></WeatherSnapshot>
+            );
+          })}
         </div>
       </div>
       <div className={styles.detailContainer}>
         <WeatherDetail
           iconImgSrc="/assets/sunny-outlined.svg"
           title="紫外線指數"
-          content="弱"
+          content={transformUvIndex(weatherDetail.uv_index)}
         ></WeatherDetail>
         <WeatherDetail
           iconImgSrc="/assets/droplet-outlined.svg"
           title="濕度"
-          content="76%"
+          content={`${weatherDetail.humidity}%`}
         ></WeatherDetail>
         <WeatherDetail
           iconImgSrc="/assets/air-outlined.svg"
           title="空氣品質 AQI"
-          content="良好 (41)"
+          content={transformAQI(weatherDetail.aqi)}
         ></WeatherDetail>
         <WeatherDetail
           iconImgSrc="/assets/visibility.svg"
           title="能見度"
-          content="9.66 公里"
+          content={`${weatherDetail.visibility} 公尺`}
         ></WeatherDetail>
         <WeatherDetail
           iconImgSrc="/assets/sunrise.svg"
           title="日出時間"
-          content="06:21"
+          content={weatherDetail.sunrise}
         ></WeatherDetail>
         <WeatherDetail
           iconImgSrc="/assets/sunset.svg"
           title="日落時間"
-          content="17:53"
+          content={weatherDetail.sunset}
         ></WeatherDetail>
       </div>
     </div>

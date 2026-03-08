@@ -3,6 +3,10 @@ import asyncio
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+from ...clients.currency_client import FawazClient
+
+currency_client = FawazClient()
+
 def get_dates(timespan: str):
     today = datetime.now()
     latest_date = today - relativedelta(days=1)
@@ -16,17 +20,16 @@ def get_dates(timespan: str):
     return []
 
 async def fetch_single_rate(client: AsyncClient, from_ccy: str, to_ccy: str, date: str):
-    url = f"https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@{date}/v1/currencies/{from_ccy}.json"
-    response = await client.get(
-        url,
-        timeout=20.0
-    )
-    data = response.json()
+    data = await currency_client.get_rate_with_date(client, from_ccy=from_ccy, to_ccy=to_ccy, date=date)
     rate = data.get(from_ccy).get(to_ccy)
     return {
         'time': date,
         'rate': rate
     }
+
+async def fetch_latest_rate(client: AsyncClient, from_ccy: str, to_ccy: str):
+    data = await currency_client.get_latest_rate(client, from_ccy=from_ccy, to_ccy=to_ccy)
+    return data.get(from_ccy).get(to_ccy)
 
 async def get_rate_history(client: AsyncClient, from_ccy: str, to_ccy: str, timespan: str):
     valid_span = ['1w', '2m', '6m', '1y', '2y']
@@ -40,3 +43,6 @@ async def get_rate_history(client: AsyncClient, from_ccy: str, to_ccy: str, time
     date_to_rate_list = await asyncio.gather(*tasks)
 
     return date_to_rate_list
+
+async def get_support_currency(client: AsyncClient):
+    return await currency_client.get_support_currency(client)

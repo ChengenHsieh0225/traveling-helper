@@ -13,10 +13,7 @@ def read_root():
 
 @router.get("/currency-list")
 async def get_support_currency(client: AsyncClient = Depends(get_http_client)):
-    url = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json"
-
-    response = await client.get(url)
-    data = response.json()
+    data = await service.get_support_currency(client)
     items = [Currency(code=key, name=val) for key, val in data.items()]
     count = len(data)
     currencyList = CurrencyList(items=items, count=count)
@@ -32,11 +29,7 @@ async def convert_currency(from_ccy: str, to_ccy: str, amount: float, client: As
             exchange_rate = 1.0
         )
     
-    url = f"https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/{from_ccy}.json"
-
-    response = await client.get(url)
-    data = response.json()
-    rate = float(f"{data.get(from_ccy).get(to_ccy):.5g}")
+    rate = await service.fetch_latest_rate(client, from_ccy=from_ccy, to_ccy=to_ccy)
     converted_amount = amount * rate
     if converted_amount < 1e-4:
         converted_amount = float(f"{converted_amount:.5g}")

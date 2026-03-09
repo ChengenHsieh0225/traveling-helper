@@ -19,4 +19,9 @@ async def test(client: AsyncClient = Depends(get_http_client)):
         return data
     except Exception as e:
         logger.error(f'GNEWS API Error: {type(e).__name__} - {str(e)}')
-        return {"status": "error", "message": str(e)}
+        return {
+            "status": "error", 
+            "message": str(e),
+            "key_found": api_key is not None,
+            "key_length": len(api_key) if api_key else 0
+        }

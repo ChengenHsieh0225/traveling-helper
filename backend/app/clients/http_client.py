@@ -21,6 +21,8 @@ class BaseAPIClient:
             url = self.base_url[url_key]
 
         try:
+            if params is not None:
+                params = {k: v for k, v in params.items() if v is not None}
             response = await client.get(url, params=params, timeout=20.0)
             response.raise_for_status()
             return response.json()

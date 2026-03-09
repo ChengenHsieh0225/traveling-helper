@@ -6,15 +6,6 @@ from ...clients.weather_client import OpenMeteoClient
 open_meteo_client = OpenMeteoClient()
 
 async def get_coordinates(city: str, client: AsyncClient, country_code: str = None):
-    url = "https://geocoding-api.open-meteo.com/v1/search"
-    params = {
-        "name": city,
-        "count": 2,
-        "language": "en",
-        "format": "json",
-        **({"countryCode": country_code} if country_code is not None else {})
-    }
-
     data = await open_meteo_client.get_coordinates(client, city=city, country_code=country_code)
 
     return CityInfo(**data['results'][0])

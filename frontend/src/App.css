@@ -1,7 +1,6 @@
 .app-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   padding-top: 44px;
   padding-bottom: 28px;
   background-color: var(--color-white);

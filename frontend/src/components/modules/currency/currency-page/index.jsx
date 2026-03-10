@@ -47,8 +47,8 @@ function CurrencyPage() {
         </div>
         <IconButton
           height="20px"
-          imgSrcActive="/assets/exchange.svg"
-          imgSrcInactive="/assets/exchange.svg"
+          imgSrcActive="/assets/other/exchange.svg"
+          imgSrcInactive="/assets/other/exchange.svg"
           noPadding="true"
           noBackground="true"
           onClick={handleSwap}

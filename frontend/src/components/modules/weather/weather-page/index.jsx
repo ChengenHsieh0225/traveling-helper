@@ -26,8 +26,8 @@ function WeatherPage({ isStarred }) {
               height="16px"
               isActive={isStarred}
               borderStyle="square"
-              imgSrcActive="/assets/star-filled.svg"
-              imgSrcInactive="/assets/star-outlined.svg"
+              imgSrcActive="/assets/other/star-filled.svg"
+              imgSrcInactive="/assets/other/star-outlined.svg"
               noPadding="true"
               noBackground="true"
             ></IconButton>
@@ -36,8 +36,8 @@ function WeatherPage({ isStarred }) {
               height="25px"
               isActive="true"
               borderStyle="semi"
-              imgSrcActive="/assets/search.svg"
-              imgSrcInactive="/assets/search.svg"
+              imgSrcActive="/assets/other/search.svg"
+              imgSrcInactive="/assets/other/search.svg"
             ></IconButton>
           </div>
           <TextButton
@@ -97,32 +97,32 @@ function WeatherPage({ isStarred }) {
       </div>
       <div className={styles.detailContainer}>
         <WeatherDetail
-          iconImgSrc="/assets/sunny-outlined.svg"
+          iconImgSrc="/assets/other/sunny-outlined.svg"
           title="紫外線指數"
           content={transformUvIndex(weatherDetail.uv_index)}
         ></WeatherDetail>
         <WeatherDetail
-          iconImgSrc="/assets/droplet-outlined.svg"
+          iconImgSrc="/assets/other/droplet-outlined.svg"
           title="濕度"
           content={`${weatherDetail.humidity}%`}
         ></WeatherDetail>
         <WeatherDetail
-          iconImgSrc="/assets/air-outlined.svg"
+          iconImgSrc="/assets/other/air-outlined.svg"
           title="空氣品質 AQI"
           content={transformAQI(weatherDetail.aqi)}
         ></WeatherDetail>
         <WeatherDetail
-          iconImgSrc="/assets/visibility.svg"
+          iconImgSrc="/assets/other/visibility.svg"
           title="能見度"
           content={`${weatherDetail.visibility} 公尺`}
         ></WeatherDetail>
         <WeatherDetail
-          iconImgSrc="/assets/sunrise.svg"
+          iconImgSrc="/assets/other/sunrise.svg"
           title="日出時間"
           content={weatherDetail.sunrise}
         ></WeatherDetail>
         <WeatherDetail
-          iconImgSrc="/assets/sunset.svg"
+          iconImgSrc="/assets/other/sunset.svg"
           title="日落時間"
           content={weatherDetail.sunset}
         ></WeatherDetail>

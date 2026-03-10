@@ -1,0 +1,10 @@
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 20px;
+
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+}

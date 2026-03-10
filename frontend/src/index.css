@@ -25,6 +25,14 @@
   text-align: center;
 }
 
+/* Font Alignment */
+.text-align-left {
+  text-align: left;
+}
+.text-align-right {
+  text-align: right;
+}
+
 /* Font Styles */
 h2, .h2 {
   font-family: var(--font-main);
@@ -60,6 +68,12 @@ h2, .h2 {
   font-family: var(--font-main);
   font-weight: 400;
   font-size: 14px;
+  line-height: 1.5;
+}
+.caption-2 {
+  font-family: var(--font-main);
+  font-weight: 400;
+  font-size: 12px;
   line-height: 1.5;
 }
 

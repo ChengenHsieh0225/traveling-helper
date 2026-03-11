@@ -21,7 +21,7 @@ function App() {
           <Route path=":newsId" element={<NewsDetailPage />} />
         </Route>
         <Route path="/locked" element={<EmptyPage />} />
-        <Route path="/" element={<Navigate to="/weather" />} />
+        <Route path="/" element={<Navigate to="/currency" />} />
       </Routes>
       <NavigationBar></NavigationBar>
     </div>

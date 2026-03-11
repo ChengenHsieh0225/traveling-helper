@@ -24,8 +24,10 @@ app = FastAPI(lifespan=lifespan)
 origins = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
-    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5173", # for Vite (npm run dev)
     "http://localhost:5173",
+    "http://127.0.0.1:4173", # for Vite (npm run preview)
+    "http://localhost:4173",
     "https://traveling-helper.vercel.app" # Vercel
 ]
 app.add_middleware(

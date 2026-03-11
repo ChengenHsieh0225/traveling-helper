@@ -1,39 +1,33 @@
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { weatherApi } from "../../api/weather";
 
 export function useWeatherQuery() {
   const [city, setCity] = useState('新北市');
   const [country, setCountry] = useState('台灣');
   const [timespan, setTimespan] = useState('24 小時');
-  const [weatherDetail, setWeatherDetail] = useState('');
-  const [forecast, setForecast] = useState([]);
 
-  const fetchDetails = async () => {
-    try {
-      const detailData = await weatherApi.getDetail(city);
-      setWeatherDetail(detailData);
-    } catch (error) {
-      console.error("[Fetch Weather Detail Failed]: ", error);
-    }
-  }
-  const fetchForecast = async () => {
-    try {
-      const forecastData = await weatherApi.getForecast(city, timespan);
-      setForecast(forecastData);
-    } catch (error) {
-      console.error("[Fetch Weather Forecast Failed]: ", error);
-    }
-  }
+  const { data: weatherDetail = '', isLoading: isDetailLoading, error: detailError } = useQuery({
+    queryKey: [city],
+    queryFn: async () => {
+      return await weatherApi.getDetail(city);
+    },
+    staleTime: 3 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+    retry: 1,
+    enabled: !!city
+  });
 
-  useEffect(() => {
-    const timer = setTimeout(fetchDetails, 300);
-    return () => clearTimeout(timer);
-  }, [city]);
-
-  useEffect(() => {
-    const timer = setTimeout(fetchForecast, 300);
-    return () => clearTimeout(timer);
-  }, [city, timespan]);
+  const { data: forecast = [], isLoading: isForecastLoading, error: forecastError } = useQuery({
+    queryKey: [city, timespan],
+    queryFn: async () => {
+      return await weatherApi.getForecast(city, timespan);
+    },
+    staleTime: 15 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+    retry: 1,
+    enabled: !!city && !!timespan
+  });
 
   return {
     city, setCity,

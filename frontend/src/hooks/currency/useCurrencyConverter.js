@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { currencyApi } from "../../api/currency";
 import { isNumeric } from "../../utils/numberProcessing";
 
@@ -8,7 +9,6 @@ export function useCurrencyConverter() {
   const [fromCurrency, setFromCurrency] = useState("twd");
   const [toCurrency, setToCurrency] = useState("jpy");
   const [timespan, setTimespan] = useState('1 週');
-  const [rateHistory, setRateHistory] = useState([]);
 
   const fetchExchange = async () => {
     try {
@@ -19,15 +19,6 @@ export function useCurrencyConverter() {
     }
   }
 
-  const fetchHistory = async () => {
-    try {
-      const historyData = await currencyApi.getRateHistory(fromCurrency, toCurrency, timespan);
-      setRateHistory(historyData);
-    } catch (error) {
-      console.error("[Fetch Rate History Failed]: ", error);
-    }
-  }
-
   useEffect(() => {
     if (isNumeric(amount)) {
       const timer = setTimeout(fetchExchange, 300); // Debounce
@@ -35,10 +26,17 @@ export function useCurrencyConverter() {
     }
   }, [amount, fromCurrency, toCurrency]);
 
-  useEffect(() => {
-    const timer = setTimeout(fetchHistory, 300);
-    return () => clearTimeout(timer);
-  }, [fromCurrency, toCurrency, timespan])
+  const { data: rateHistory = [], isLoading: isHistoryLoading, error} = useQuery({
+    queryKey: [fromCurrency, toCurrency, timespan],
+    queryFn: async () => {
+      return await currencyApi.getRateHistory(fromCurrency, toCurrency, timespan);
+    },
+
+    staleTime: 10 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+    retry: 1,
+    enabled: !!fromCurrency && !!toCurrency && !!timespan
+  });
 
   const handleSwap = () => {
     setFromCurrency(toCurrency);

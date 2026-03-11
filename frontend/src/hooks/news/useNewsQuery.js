@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { newsApi } from "../../api/news";
 
 export function useNewsQuery() {
   const [city, setCity] = useState("new taipei");
   const [country, setCountry] = useState("taiwan");
-  const [newsList, setNewsList] = useState([]);
   const [newsType, setNewsType] = useState('headlines');
   const [lang, setLang] = useState('zh');
 
@@ -13,24 +13,20 @@ export function useNewsQuery() {
     setCountry(country);
   };
 
-  const fetchNewsList = async () => {
-    try {
-      let newsData;
-      if (newsType === 'headlines') newsData = await newsApi.getHeadlines(city, lang, country);
-      else if (newsType === 'latest') newsData = await newsApi.getLatestNews(city, lang, country);
-      else if (newsType === 'relevant') newsData = await newsApi.getLatestNews(city, lang, country);
-      else throw new Error(`Invalid news type: ${newsType}`);
+  const { data: newsList = [], isLoading, error } = useQuery({
+    queryKey: [city, newsType, lang],
+    queryFn: async () => {
+      if (newsType === 'headlines') return await newsApi.getHeadlines(city, lang, country);
+      if (newsType === 'latest') return await newsApi.getLatestNews(city, lang, country);
+      if (newsType === 'relevant') return await newsApi.getMostRelevantNews(city, lang, country);
+      throw new Error(`Invalid news type: ${newsType}`);
+    },
 
-      setNewsList(newsData);
-    } catch (error) {
-      console.error("[Fetch News List Failed]: ", error);
-    }
-  }
-
-  useEffect(() => {
-    const timer = setTimeout(fetchNewsList, 300);
-    return () => clearTimeout(timer);
-  }, [city, newsType, lang]);
+    staleTime: 30 * 60 * 1000, // 30 mins
+    gcTime: 60 * 60 * 1000,
+    retry: 1,
+    enabled: !!city && !!country
+  });
 
   return {
     city, setCity,

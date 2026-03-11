@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { newsApi } from "../../api/news";
+import { NewsContext } from "../../contexts/NewsContext";
 
 export function useNewsQuery() {
-  const [city, setCity] = useState("new taipei");
-  const [country, setCountry] = useState("taiwan");
-  const [newsType, setNewsType] = useState('headlines');
-  const [lang, setLang] = useState('zh');
+  const {
+    city, setCity,
+    country, setCountry,
+    newsType, setNewsType,
+    lang, setLang
+  } = useContext(NewsContext);
 
   const updateLocation = ({ 'city': city, 'country': country }) => {
     setCity(city);

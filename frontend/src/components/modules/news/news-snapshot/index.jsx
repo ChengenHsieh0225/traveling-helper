@@ -1,8 +1,8 @@
 import styles from "./style.module.css";
 
-function NewsSnapshot({ title, description, imgSrc, date, source }) {
+function NewsSnapshot({ title, description, imgSrc, date, source, onClick }) {
   return (
-    <div className={styles.outerContainer}>
+    <div className={styles.outerContainer} onClick={() => onClick()} >
       <img className={styles.image} src={imgSrc}></img>
       <div className={styles.newsInfoContainer}>
         <p className="body-bold text-align-left">{title}</p>

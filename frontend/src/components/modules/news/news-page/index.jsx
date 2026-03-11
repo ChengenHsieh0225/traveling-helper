@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import styles from "./style.module.css";
 import NewsSnapshot from "../news-snapshot";
 import NewsOptionSelector from "../news-option-selector";
@@ -69,6 +71,9 @@ const SUPPORTED_CITIES = {
 }
 
 function NewsPage() {
+
+  const navigate = useNavigate()
+
   const {
     city, setCity,
     country, setCountry,
@@ -112,6 +117,7 @@ function NewsPage() {
             imgSrc={item.image}
             date={item.publish_time}
             source={item.source}
+            onClick={() => navigate(`./${item.id}`, { state: { newsData: item } })}
           ></NewsSnapshot>
         );
       })}

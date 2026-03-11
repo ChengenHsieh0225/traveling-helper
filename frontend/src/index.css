@@ -14,7 +14,7 @@
 
   /* Font Typography */
   --font-main: "Noto Sans TC", sans;
-
+  --font-special: "Source Serif 4", "Noto Serif TC", serif;
 }
 
 /* Global Setting */

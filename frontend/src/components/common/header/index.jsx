@@ -22,16 +22,16 @@ function Header({ isLoggedIn, isLightMode }) {
           height="20px"
           isActive={isLoggedIn}
           borderStyle="square"
-          imgSrcActive="/assets/login.svg"
-          imgSrcInactive="/assets/logout.svg"
+          imgSrcActive="/assets/other/login.svg"
+          imgSrcInactive="/assets/other/logout.svg"
           noPadding="true"
         ></IconButton>
         <IconButton
           height="20px"
           isActive={isLightMode}
           borderStyle="square"
-          imgSrcActive="/assets/sun.svg"
-          imgSrcInactive="/assets/moon.svg"
+          imgSrcActive="/assets/other/sun.svg"
+          imgSrcInactive="/assets/other/moon.svg"
           noPadding="true"
         ></IconButton>
       </div>

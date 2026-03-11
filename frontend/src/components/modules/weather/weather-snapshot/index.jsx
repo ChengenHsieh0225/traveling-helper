@@ -13,7 +13,7 @@ function WeatherSnapshot({ time, weatherCode: weatherCode, temp, pop, isDay }) {
       </div>
       <div className={styles.popContainer}>
         <div className={styles.dropletContainer}>
-          <img className="img-fit" src="/assets/droplet.svg"></img>
+          <img className="img-fit" src="/assets/other/droplet.svg"></img>
         </div>
         <p className="caption">{pop}%</p>
       </div>

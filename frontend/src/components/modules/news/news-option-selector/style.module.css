@@ -1,0 +1,25 @@
+.selectorContainer {
+  display: flex;
+  background-color: var(--color-gray-3-transparent);
+  padding: 3px 10px;
+  border-radius: 15px;
+}
+
+.select {
+  border: none;
+  background-color: var(--color-transparent);
+
+  /* remove default arrows for Chrome, Safari, Firefox */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 18px;
+
+  padding-left: 24px; /* for icon */
+  
+  cursor: pointer;
+  outline: none;
+}

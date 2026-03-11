@@ -39,18 +39,18 @@ const formatNewsList = (data) => {
 };
 
 export const newsApi = {
-  getHeadlines: async (city, countryCode = "tw") => {
-    const endpoint = `/api/news/headlines?published_country_code=${countryCode}&lang=${"zh"}`;
+  getHeadlines: async (city, lang = 'zh', country) => {
+    const endpoint = `/api/news/headlines?related_city=${city}" OR "${country}&lang=${lang}`;
     const data = await request(endpoint);
     return formatNewsList(data);
   },
-  getLatestNews: async (city, countryCode = "tw") => {
-    const endpoint = `/api/news/latest-news?related_city=${"Tokyo"}&lang=${"en"}`;
+  getLatestNews: async (city, lang = 'zh', country) => {
+    const endpoint = `/api/news/latest-news?related_city=${city}" OR "${country}&lang=${lang}`;
     const data = await request(endpoint);
     return formatNewsList(data);
   },
-  getMostRelevantNews: async (city, countryCode = "tw") => {
-    const endpoint = `/api/news/relevant-news?related_city=${"Paris"}&lang=${"en"}`;
+  getMostRelevantNews: async (city, lang = 'zh', country) => {
+    const endpoint = `/api/news/relevant-news?related_city=${city}" OR "${country}&lang=${lang}`;
     const data = await request(endpoint);
     return formatNewsList(data);
   }

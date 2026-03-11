@@ -8,3 +8,9 @@
   overflow-y: auto;
   scrollbar-width: none;
 }
+
+.optionContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}

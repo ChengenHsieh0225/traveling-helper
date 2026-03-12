@@ -22,3 +22,6 @@ legacy
 
 # Vite Cache
 .vite
+
+# Vite Build
+dev-dist/

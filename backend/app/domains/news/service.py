@@ -1,7 +1,7 @@
 from httpx import AsyncClient
 
 from .schema import News, NewsList
-from ...clients.news_client import GNewsClient
+from .client import GNewsClient
 from app.common import utils
 import logging, os
 from dotenv import load_dotenv

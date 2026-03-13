@@ -3,7 +3,7 @@ import asyncio
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from ...clients.currency_client import FawazClient
+from .client import FawazClient
 
 currency_client = FawazClient()
 

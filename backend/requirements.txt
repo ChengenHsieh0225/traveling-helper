@@ -4,3 +4,4 @@ httpx
 python-dateutil
 pydantic
 python-dotenv
+redis-py

@@ -1,4 +1,4 @@
-from .http_client import BaseAPIClient
+from ...core.http_client import BaseAPIClient
 from httpx import AsyncClient
 
 import logging

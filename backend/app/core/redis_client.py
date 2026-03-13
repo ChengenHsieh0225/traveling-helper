@@ -1,6 +1,6 @@
 import logging
 import redis.asyncio as redis
-import os
+from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ class RedisClient():
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._client = redis.from_url(
-                os.getenv("REDIS_URL"),
+                settings.REDIS_URL,
                 decode_responses=True,
                 socket_timeout=5,
                 health_check_interval=30

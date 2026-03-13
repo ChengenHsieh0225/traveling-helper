@@ -3,11 +3,10 @@ from httpx import AsyncClient
 from .schema import News, NewsList
 from .client import GNewsClient
 from app.common import utils
-import logging, os
-from dotenv import load_dotenv
+import logging
+from app.core.config import settings
 
-load_dotenv()
-gnews_client = GNewsClient(os.getenv('GNEWS_API_KEY'))
+gnews_client = GNewsClient(settings.GNEWS_API_KEY)
 
 logger = logging.getLogger(__name__)
 

@@ -36,7 +36,8 @@ const formatForecast = (data, timespan) => {
         weather_code: item.weather_code,
         temp: item.temp_max,
         temp_min: item.temp_min,
-        pop: item.pop
+        pop: item.pop,
+        is_day: timespan === '1d' ? Boolean(item.is_day) : true
       };
     }
   )

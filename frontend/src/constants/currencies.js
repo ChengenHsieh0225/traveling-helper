@@ -15,16 +15,20 @@ export const SUPPORTED_CURRENCIES = {
     chName: '歐元',
     iconCode: 'eu'
   },
+  'usd': {
+    chName: '美金',
+    iconCode: 'us'
+  },
   'hkd': {
     chName: '港幣',
     iconCode: 'hk'
   },
   'mop': {
-    chName: '澳門幣',
+    chName: '澳門元',
     iconCode: 'mo'
   },
   'myr': {
-    chName: '馬來幣',
+    chName: '馬幣',
     iconCode: 'my'
   },
   'cny': {

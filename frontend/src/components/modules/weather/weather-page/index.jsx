@@ -114,7 +114,7 @@ function WeatherPage({ isStarred }) {
         <WeatherDetail
           iconImgSrc="/assets/other/visibility.svg"
           title="能見度"
-          content={`${weatherDetail.visibility} 公尺`}
+          content={`${weatherDetail.visibility} 公里`}
         ></WeatherDetail>
         <WeatherDetail
           iconImgSrc="/assets/other/sunrise.svg"

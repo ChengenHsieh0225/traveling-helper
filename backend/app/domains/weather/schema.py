@@ -16,9 +16,10 @@ class WeatherInfo(BaseModel):
     visibility: float
     sunrise: str
     sunset: str
+    uv_index: float
 
 class AirQuality(BaseModel):
-    uv_index: float
+    # uv_index: float
     aqi: float
 
 class WeatherDetail(WeatherInfo, AirQuality):

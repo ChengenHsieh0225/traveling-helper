@@ -22,11 +22,12 @@ class OpenMeteoAdapter:
             pop=data['current']['precipitation_probability'],
             visibility=data['current']['visibility'],
             sunrise=data['daily']['sunrise'][0],
-            sunset=data['daily']['sunset'][0]
+            sunset=data['daily']['sunset'][0],
+            uv_index=data['current']['uv_index']
         )
     
     def toWeatherSnapshotList(self, data, timespan) -> WeatherSnapshot:
-        snaphots = WeatherSnapshotList(items=[])
+        snapshots = WeatherSnapshotList(items=[])
         if timespan == '1d':
             hourly_data = data['hourly']
             for i in range(24):
@@ -37,7 +38,7 @@ class OpenMeteoAdapter:
                     pop=hourly_data['precipitation_probability'][i],
                     is_day=hourly_data['is_day'][i]
                 )
-                snaphots.items.append(snapshot)
+                snapshots.items.append(snapshot)
         elif timespan == '1w':
             daily_data = data['daily']
             for i in range(7):
@@ -48,12 +49,12 @@ class OpenMeteoAdapter:
                     temp_min=daily_data['temperature_2m_min'][i],
                     pop=daily_data['precipitation_probability_max'][i]
                 )
-                snaphots.items.append(snapshot)
-        return snaphots
+                snapshots.items.append(snapshot)
+        return snapshots
 
     def toAirQuality(self, data) -> AirQuality:
         return AirQuality(
-            uv_index=data['current']['uv_index'],
+            # uv_index=data['current']['uv_index'],
             aqi=data['current']['us_aqi']
         )
 
@@ -89,7 +90,8 @@ class OpenMeteoClient(BaseAPIClient):
                 "weather_code", 
                 "is_day", 
                 "precipitation_probability",
-                "visibility"
+                "visibility",
+                "uv_index"
             ],
             "timezone": "auto",
         }

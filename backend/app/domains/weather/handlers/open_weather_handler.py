@@ -2,12 +2,12 @@ from fastapi import Depends
 import logging
 
 from .base_handler import BaseHandler
-from ..clients.open_meteo_client import OpenMeteoClient
+from ..clients.open_weather_client import OpenWeatherClient
 
 logger = logging.getLogger(__name__)
 
-class OpenMeteoHandler(BaseHandler):
-    def __init__(self, client: OpenMeteoClient=Depends()):
+class OpenWeatherHandler(BaseHandler):
+    def __init__(self, client: OpenWeatherClient=Depends()):
         super().__init__()
         self.client=client
     
@@ -17,36 +17,40 @@ class OpenMeteoHandler(BaseHandler):
             if data:
                 return data
         except Exception as e:
-            logger.warning(f"OpenMeteo failed, trying next handler: {e}")
+            logger.warning(f"OpenWeather failed, trying next handler: {e}")
 
         return await super().get_coordinates(city, country_code)
     
     async def get_weather_info(self, latitude: float, longitude: float):
         try:
-            data = await self.client.get_weather_info(latitude=latitude, longitude=longitude)
+            data = await self.client.get_weather_info(lat=latitude, lon=longitude)
             if data:
                 return data
         except Exception as e:
-            logger.warning(f"OpenMeteo failed, trying next handler: {e}")
+            logger.warning(f"OpenWeather failed, trying next handler: {e}")
 
         return await super().get_weather_info(latitude, longitude)
     
     async def get_air_quality(self, latitude: float, longitude: float):
         try:
-            data = await self.client.get_air_quality(latitude=latitude, longitude=longitude)
+            data = await self.client.get_air_quality(lat=latitude, lon=longitude)
             if data:
                 return data
         except Exception as e:
-            logger.warning(f"OpenMeteo failed, trying next handler: {e}")
+            logger.warning(f"OpenWeather failed, trying next handler: {e}")
 
         return await super().get_air_quality(latitude, longitude)
     
     async def get_weather_forecast(self, latitude: float, longitude: float, timespan: str):
         try:
-            data = await self.client.get_weather_forecast(latitude=latitude, longitude=longitude, timespan=timespan)
+            if timespan == '1w':
+                data = await self.client.get_weather_forecast_daily(lat=latitude, lon=longitude)
+            # default case: hourly forecast for one day
+            else:
+                data = await self.client.get_weather_forecast_hourly(lat=latitude, lon=longitude)
             if data:
                 return data
         except Exception as e:
-            logger.warning(f"OpenMeteo failed, trying next handler: {e}")
+            logger.warning(f"OpenWeather failed, trying next handler: {e}")
 
         return await super().get_weather_forecast(latitude, longitude, timespan)

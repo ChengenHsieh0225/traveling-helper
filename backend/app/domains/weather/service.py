@@ -5,6 +5,7 @@ from .schema import WeatherDetail
 from .handlers.base_handler import BaseHandler
 from .handlers.open_meteo_handler import OpenMeteoHandler
 from .handlers.redis_handler import RedisHandler
+from .handlers.open_weather_handler import OpenWeatherHandler
 
 class WeatherService:
     def __init__(self, handler: BaseHandler):
@@ -31,9 +32,11 @@ class WeatherService:
         return await self.handler.get_weather_forecast(latitude, longitude, timespan)
 
 def get_weather_service(
+        redis_handler: RedisHandler = Depends(),
         open_meteo_handler: OpenMeteoHandler = Depends(),
-        redis_handler: RedisHandler = Depends()
+        open_weather_handler: OpenWeatherHandler = Depends()
 ) -> WeatherService:
     chain = redis_handler
-    redis_handler.set_next(open_meteo_handler)
+    redis_handler.set_next(open_meteo_handler).set_next(open_weather_handler)
+    # redis_handler.set_next(open_weather_handler)
     return WeatherService(chain)

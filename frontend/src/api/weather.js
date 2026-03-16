@@ -37,7 +37,7 @@ const formatForecast = (data, timespan) => {
         temp: item.temp_max,
         temp_min: item.temp_min,
         pop: item.pop,
-        is_day: timespan === '1d' ? Boolean(item.is_day) : true
+        is_day: timespan === '24 小時' ? Boolean(item.is_day) : true
       };
     }
   )

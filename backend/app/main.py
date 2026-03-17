@@ -7,6 +7,7 @@ import httpx
 
 from app.api.api import api_router
 from app.core.redis_client import get_redis_client
+from app.core.db import init_db
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -17,6 +18,7 @@ async def lifespan(app: FastAPI):
         ),
         timeout=20.0
     )
+    # init_db()
     yield
     await deps._http_client.aclose()
     client = get_redis_client()

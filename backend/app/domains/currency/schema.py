@@ -1,14 +1,11 @@
 from pydantic import BaseModel
 
-class Currency(BaseModel):
+class CurrencyRead(BaseModel):
     code: str
-    country: str | None = None
-    name: str | None = None
+    ch_name: str
+    en_name: str | None = None
     symbol: str | None = None
-
-class CurrencyList(BaseModel):
-    items: list[Currency]
-    count: int | None = None
+    icon_code: str
 
 class ConversionResult(BaseModel):
     amount: float

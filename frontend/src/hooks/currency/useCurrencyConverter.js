@@ -43,6 +43,19 @@ export function useCurrencyConverter() {
     setToCurrency(fromCurrency);
   };
 
+  const { data: currencyDict = {}, isLoading: isCurrenciesLoading } = useQuery({
+    queryKey: ['supportedCurrencies'], 
+    
+    queryFn: async () => {
+      const data = await currencyApi.getSupportedCurrencies();
+      return Object.fromEntries(data.map(c => [c.code, c]));
+    },
+    
+    staleTime: 60 * 60 * 1000,
+    gcTime: 24 * 60 * 60 * 1000,
+    retry: 1
+  });
+
   return {
     amount, setAmount,
     result,
@@ -50,6 +63,7 @@ export function useCurrencyConverter() {
     toCurrency, setToCurrency,
     handleSwap,
     timespan, setTimespan,
-    rateHistory
+    rateHistory,
+    currencyDict
   };
 }

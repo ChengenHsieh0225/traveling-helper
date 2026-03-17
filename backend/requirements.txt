@@ -5,3 +5,5 @@ python-dateutil
 pydantic
 python-dotenv
 redis-py
+sqlmodel
+psycopg[binary]

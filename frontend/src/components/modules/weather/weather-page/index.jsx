@@ -108,7 +108,7 @@ function WeatherPage({ isStarred }) {
         ></WeatherDetail>
         <WeatherDetail
           iconImgSrc="/assets/other/air-outlined.svg"
-          title="空氣品質 AQI"
+          title="空氣品質"
           content={transformAQI(weatherDetail.aqi)}
         ></WeatherDetail>
         <WeatherDetail

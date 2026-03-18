@@ -1,5 +1,5 @@
 from sqlmodel import create_engine, SQLModel
-from app.domains.currency.models import Currency
+from app.domains.common.models.currency import Currency
 from app.core.config import settings
 
 database_url = settings.POSTGRESQL_DATABASE_URL

@@ -4,7 +4,7 @@ from sqlmodel import Session, select
 from app.core.deps import get_http_client, get_session
 
 from .schema import CurrencyRead, ConversionResult
-from .models import Currency
+from ..common.models.currency import Currency
 from . import service
 
 router = APIRouter()

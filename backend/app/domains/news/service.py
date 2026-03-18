@@ -2,7 +2,7 @@ from httpx import AsyncClient
 
 from .schema import News, NewsList
 from .client import GNewsClient
-from app.common import utils
+from ..common import utils
 import logging
 from app.core.config import settings
 

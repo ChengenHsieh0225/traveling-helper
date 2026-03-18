@@ -1,6 +1,7 @@
 from ....core.http_client import BaseAPIClient
 from httpx import AsyncClient
 from fastapi import Depends
+from datetime import datetime, timedelta, timezone
 from app.core.deps import get_http_client
 from ..schema import CityInfo, WeatherInfo, AirQuality, WeatherSnapshot, WeatherSnapshotList
 
@@ -29,16 +30,26 @@ class OpenMeteoAdapter:
     def toWeatherSnapshotList(self, data, timespan) -> WeatherSnapshot:
         snapshots = WeatherSnapshotList(items=[])
         if timespan == '1d':
+            utc_offset = data.get("utc_offset_seconds", 0)
             hourly_data = data['hourly']
-            for i in range(24):
-                snapshot = WeatherSnapshot(
-                    time=hourly_data['time'][i],
-                    weather_code=hourly_data['weather_code'][i],
-                    temp_max=hourly_data['temperature_2m'][i],
-                    pop=hourly_data['precipitation_probability'][i],
-                    is_day=hourly_data['is_day'][i]
-                )
-                snapshots.items.append(snapshot)
+            local_time = datetime.now(timezone.utc) + timedelta(seconds=utc_offset)
+            next_hour_dt = local_time.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+            target_time_str = next_hour_dt.strftime("%Y-%m-%dT%H:%M")
+            try:
+                time_list = hourly_data["time"]
+                next_hour_index = time_list.index(target_time_str)
+                for i in range(next_hour_index, next_hour_index+24):
+                    snapshot = WeatherSnapshot(
+                        time=hourly_data['time'][i],
+                        weather_code=hourly_data['weather_code'][i],
+                        temp_max=hourly_data['temperature_2m'][i],
+                        pop=hourly_data['precipitation_probability'][i],
+                        is_day=hourly_data['is_day'][i]
+                    )
+                    snapshots.items.append(snapshot)
+            except ValueError:
+                logger.warning(f'Cannot find the next_hour_index')
+            
         elif timespan == '1w':
             daily_data = data['daily']
             for i in range(7):

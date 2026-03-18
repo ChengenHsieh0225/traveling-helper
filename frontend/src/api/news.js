@@ -38,6 +38,16 @@ const formatNewsList = (data) => {
   );
 };
 
+const transformedCities = (cities) => {
+  if (!cities || !Array.isArray(cities)) return [];
+  return cities
+    .filter(city => city.is_popular)
+    .map(city => ({
+      ...city,
+      label: `${city.ch_name}, ${city.ch_country_name}`
+    }));
+};
+
 export const newsApi = {
   getHeadlines: async (city, lang = 'zh', country) => {
     const endpoint = `/api/news/headlines?related_city=${city}" OR "${country}&lang=${lang}`;
@@ -56,7 +66,7 @@ export const newsApi = {
   },
   getSupportedCities: async () => {
     const endpoint = `/api/news/support-city`;
-    const data = await request(endpoint)
-    return data
+    const data = await request(endpoint);
+    return transformedCities(data);
   }
 };

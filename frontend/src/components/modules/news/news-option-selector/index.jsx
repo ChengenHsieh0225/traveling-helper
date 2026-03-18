@@ -12,8 +12,6 @@ function NewsOptionSelector({ value, valueList, iconUrl, onChange }) {
   const labelText = currentItem ? currentItem.label : "";
   const dynamicWidth = labelText.length * 10 + 36;
 
-  console.log(labelText, ": ", dynamicWidth);
-
   return (
     <div className={styles.selectorContainer}>
       <select

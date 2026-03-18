@@ -32,17 +32,6 @@ const SUPPORTED_NEWS_TYPES = [
   }
 ]
 
-
-const transformedCities = (cities) => {
-  if (!cities || !Array.isArray(cities)) return [];
-  return cities
-    .filter(city => city.is_popular)
-    .map(city => ({
-      ...city,
-      label: `${city.ch_name}, ${city.ch_country_name}`
-    }));
-};
-
 function NewsPage() {
 
   const navigate = useNavigate()
@@ -62,7 +51,7 @@ function NewsPage() {
       <div className={styles.optionContainer}>
         <NewsOptionSelector
           value={cityIndex}
-          valueList={transformedCities(supportedCities)}
+          valueList={supportedCities}
           iconUrl="/assets/other/location-pin.svg"
           onChange={(index) => setCityIndex(index)}
         ></NewsOptionSelector>

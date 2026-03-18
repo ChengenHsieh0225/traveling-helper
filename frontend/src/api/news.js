@@ -53,5 +53,10 @@ export const newsApi = {
     const endpoint = `/api/news/relevant-news?related_city=${city}" OR "${country}&lang=${lang}`;
     const data = await request(endpoint);
     return formatNewsList(data);
+  },
+  getSupportedCities: async () => {
+    const endpoint = `/api/news/support-city`;
+    const data = await request(endpoint)
+    return data
   }
 };

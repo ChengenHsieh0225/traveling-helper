@@ -7,6 +7,7 @@ export function NewsProvider({ children }) {
   const [country, setCountry] = useState("taiwan");
   const [newsType, setNewsType] = useState("headlines");
   const [lang, setLang] = useState("zh");
+  const [cityIndex, setCityIndex] = useState(0);
 
   return (
     <NewsContext.Provider
@@ -14,7 +15,8 @@ export function NewsProvider({ children }) {
         city, setCity,
         country, setCountry,
         newsType, setNewsType,
-        lang, setLang
+        lang, setLang,
+        cityIndex, setCityIndex
       }}
     >
       {children}

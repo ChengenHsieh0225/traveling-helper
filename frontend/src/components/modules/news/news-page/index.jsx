@@ -6,106 +6,77 @@ import NewsOptionSelector from "../news-option-selector";
 
 import { useNewsQuery } from "../../../../hooks/news/useNewsQuery";
 
-const transformNewsType = (newsType) => {
-  if (newsType === 'headline') return '熱門';
-  if (newsType === 'latest') return '最新';
-  if (newsType === 'relevant') return '相關程度';
-  return '';
-}
-
-const SUPPORTED_LANGUAGES = {
-  'zh': {
+const SUPPORTED_LANGUAGES = [
+  {
     value: 'zh',
     label: '中文'
   },
-  'en': {
+  {
     value: 'en',
     label: '英文'
   }
-}
+]
 
-const SUPPORTED_NEWS_TYPES = {
-  'headlines': {
+const SUPPORTED_NEWS_TYPES = [
+  {
     value: 'headlines',
     label: '熱門'
   },
-  'latest': {
+  {
     value: 'latest',
     label: '最新'
   },
-  'relevant': {
+  {
     value: 'relevant',
     label: '最相關'
   }
-}
+]
 
-const SUPPORTED_CITIES = {
-  'taipei': {
-    value: {
-      city: 'taipei',
-      country: 'taiwan'
-    },
-    label: '台北, 台灣'
-  },
-  'new taipei': {
-    value: {
-      city: 'new taipei',
-      country: 'taiwan'
-    },
-    label: '新北, 台灣'
-  },
-  'tokyo': {
-    value: {
-      city: 'tokyo',
-      country: 'japan'
-    },
-    label: '東京, 日本'
-  },
-  'paris': {
-    value: {
-      city: 'paris',
-      country: 'france'
-    },
-    label: '巴黎, 法國'
-  }
-}
+
+const transformedCities = (cities) => {
+  if (!cities || !Array.isArray(cities)) return [];
+  return cities
+    .filter(city => city.is_popular)
+    .map(city => ({
+      ...city,
+      label: `${city.ch_name}, ${city.ch_country_name}`
+    }));
+};
 
 function NewsPage() {
 
   const navigate = useNavigate()
 
   const {
-    city, setCity,
-    country, setCountry,
+    city,
+    country,
     newsList,
     newsType, setNewsType,
     lang, setLang,
-    updateLocation
+    cityIndex, setCityIndex,
+    supportedCities
   } = useNewsQuery();
 
   return (
     <div className={styles.contentContainer}>
       <div className={styles.optionContainer}>
         <NewsOptionSelector
-          value={city}
-          valueList={SUPPORTED_CITIES}
+          value={cityIndex}
+          valueList={transformedCities(supportedCities)}
           iconUrl="/assets/other/location-pin.svg"
-          onChange={(key) => {
-            const selectedData = SUPPORTED_CITIES[key].value;
-            updateLocation(selectedData);
-          }}
+          onChange={(index) => setCityIndex(index)}
         ></NewsOptionSelector>
         <NewsOptionSelector
           value={newsType}
           valueList={SUPPORTED_NEWS_TYPES}
           iconUrl="/assets/other/sort.svg"
-          onChange={setNewsType}
+          onChange={(index) => setNewsType(SUPPORTED_NEWS_TYPES[index].value)}
         ></NewsOptionSelector>
         <NewsOptionSelector
           value={lang}
           valueList={SUPPORTED_LANGUAGES}
           iconUrl="/assets/other/language.svg"
-          onChange={setLang}
+          onChange={(index) => setLang(SUPPORTED_LANGUAGES[index].value)}
         ></NewsOptionSelector>
       </div>
       {newsList.map((item) => {

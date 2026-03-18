@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { newsApi } from "../../api/news";
 import { NewsContext } from "../../contexts/NewsContext";
@@ -8,13 +8,17 @@ export function useNewsQuery() {
     city, setCity,
     country, setCountry,
     newsType, setNewsType,
-    lang, setLang
+    lang, setLang,
+    cityIndex, setCityIndex
   } = useContext(NewsContext);
 
-  const updateLocation = ({ 'city': city, 'country': country }) => {
-    setCity(city);
-    setCountry(country);
-  };
+  useEffect(() => {
+    if (supportedCities.length > 0) {
+      const isEn = lang === 'en';
+      setCity(isEn ? supportedCities[cityIndex].en_name : supportedCities[cityIndex].ch_name),
+      setCountry(isEn ? supportedCities[cityIndex].en_country_name: supportedCities[cityIndex].ch_country_name)
+    }
+  }, [cityIndex, lang])
 
   const { data: newsList = [], isLoading, error } = useQuery({
     queryKey: [city, newsType, lang],
@@ -31,12 +35,25 @@ export function useNewsQuery() {
     enabled: !!city && !!country
   });
 
+  const { data: supportedCities = [], isCitiesLoading } = useQuery({
+    queryKey: ['supportedCities'],
+    queryFn: async () => {
+      const data = await newsApi.getSupportedCities();
+      return data;
+    },
+
+    staleTime: 60 * 60 * 1000,
+    gcTime: 24 * 60 * 60 * 1000,
+    retry: 1
+  });
+
   return {
-    city, setCity,
-    country, setCountry,
+    city,
+    country,
     newsList,
     newsType, setNewsType,
     lang, setLang,
-    updateLocation
+    cityIndex, setCityIndex,
+    supportedCities
   };
 }

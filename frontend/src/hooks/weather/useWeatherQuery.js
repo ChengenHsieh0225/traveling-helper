@@ -12,7 +12,6 @@ export function useWeatherQuery() {
     queryKey: ['cityList'],
     queryFn: async () => {
       const data = await weatherApi.getSupportedCities();
-      console.log(data);
       return data;
     },
 

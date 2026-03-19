@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-   registerType: 'autoUpdate',
+   registerType: 'prompt',
    /// To test the SW functionality in dev environment
    includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
    devOptions: {

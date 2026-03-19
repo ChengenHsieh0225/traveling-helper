@@ -4,6 +4,6 @@ httpx
 python-dateutil
 pydantic
 python-dotenv
-redis-py
+redis
 sqlmodel
 psycopg[binary]

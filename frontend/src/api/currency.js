@@ -31,4 +31,9 @@ export const currencyApi = {
       '匯率': element.rate,
     }));
   },
+  getSupportedCurrencies: async () => {
+    const endpoint = `/api/currency/support-currency`
+    const data = await request(endpoint)
+    return data
+  }
 };

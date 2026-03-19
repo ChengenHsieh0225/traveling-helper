@@ -7,18 +7,17 @@ import App from "./App.jsx";
 
 import { registerSW } from "virtual:pwa-register";
 
-if (import.meta.env.PROD) {
-  registerSW({
-    onNeedRefresh() {
-      if (confirm('有新版本內容，是否立即更新？')) {
-        window.location.reload();
-      }
-    },
-    onOfflineReady() {
-      console.log('App 已準備好離線使用！');
-    },
-  });
-}
+const updateSW = registerSW({
+  onNeedRefresh() {
+    // 改用更直覺的 UI，或者維持 confirm
+    if (confirm('發現新版本！是否立即更新以獲得最新天氣資訊？')) {
+      updateSW(true); // 關鍵：這會強制 SW 跳過等待並立刻更新
+    }
+  },
+  onOfflineReady() {
+    console.log('App 已準備好離線使用！');
+  },
+});
 
 const queryClient = new QueryClient();
 

@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends
 from httpx import AsyncClient
-from app.core.deps import get_http_client
+from sqlmodel import Session, select
+from app.core.deps import get_http_client, get_session
 
-from .schema import Currency, CurrencyList, ConversionResult
+from .schema import CurrencyRead, ConversionResult
+from ..common.models.currency import Currency
 from . import service
 
 router = APIRouter()
@@ -11,14 +13,11 @@ router = APIRouter()
 def read_root():
     return {"Hello": "Currency Router"}
 
-@router.get("/currency-list")
-async def get_support_currency(client: AsyncClient = Depends(get_http_client)):
-    data = await service.get_support_currency(client)
-    items = [Currency(code=key, name=val) for key, val in data.items()]
-    count = len(data)
-    currencyList = CurrencyList(items=items, count=count)
-
-    return currencyList
+@router.get("/support-currency", response_model=list[CurrencyRead])
+async def get_support_currency(session: Session = Depends(get_session)):
+    statement = select(Currency)
+    results = session.exec(statement).all()
+    return results
 
 # GET: /currency-exchange/latest?from_ccy={}&to_ccy={}&amount={}
 @router.get("/latest")

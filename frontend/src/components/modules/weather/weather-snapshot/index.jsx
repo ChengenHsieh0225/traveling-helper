@@ -1,7 +1,8 @@
 import styles from "./style.module.css";
 import { getWeatherIconUrl } from "../helper";
 
-function WeatherSnapshot({ time, weatherCode: weatherCode, temp, pop, isDay }) {
+function WeatherSnapshot({ time, weatherCode: weatherCode, temp_max, temp_min, pop, isDay }) {
+  const temp_display = temp_min ? `${Math.round(temp_max)}°/${Math.round(temp_min)}°` : `${temp_max.toFixed(1)}°C`;
   return (
     <div className={styles.snapshotContainer}>
       <p className="caption">{time}</p>
@@ -9,7 +10,7 @@ function WeatherSnapshot({ time, weatherCode: weatherCode, temp, pop, isDay }) {
         <div className={styles.weatherIconContainer}>
           <img className="img-fit" src={getWeatherIconUrl(weatherCode, isDay)}></img>
         </div>
-        <p className="body-bold">{temp}°C</p>
+        <p className="body-bold">{temp_display}</p>
       </div>
       <div className={styles.popContainer}>
         <div className={styles.dropletContainer}>

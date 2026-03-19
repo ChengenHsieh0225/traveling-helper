@@ -26,7 +26,8 @@ function CurrencyPage() {
     toCurrency, setToCurrency,
     handleSwap,
     timespan, setTimespan,
-    rateHistory
+    rateHistory,
+    currencyDict
   } = useCurrencyConverter();
 
   return (
@@ -36,6 +37,7 @@ function CurrencyPage() {
           <CurrencySelector
             value={fromCurrency}
             onChange={setFromCurrency}
+            currencyDict={currencyDict}
           ></CurrencySelector>
           <input
             className={`body-bold ${styles.input}`}
@@ -57,6 +59,7 @@ function CurrencyPage() {
           <CurrencySelector
             value={toCurrency}
             onChange={setToCurrency}
+            currencyDict={currencyDict}
           ></CurrencySelector>
           <p className={`body-bold ${styles.output}`}>{result}</p>
         </div>

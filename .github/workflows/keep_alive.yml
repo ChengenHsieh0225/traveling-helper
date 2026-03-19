@@ -6,4 +6,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping Render
-        run: curl https://traveling-helper.onrender.com/system/ping
+        run: curl https://traveling-helper.onrender.com/api/system/ping

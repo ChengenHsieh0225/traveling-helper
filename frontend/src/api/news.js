@@ -38,20 +38,38 @@ const formatNewsList = (data) => {
   );
 };
 
+const transformedCities = (cities) => {
+  if (!cities || !Array.isArray(cities)) return [];
+  return cities
+    .filter(city => city.is_popular)
+    .map(city => ({
+      ...city,
+      label: `${city.ch_name}, ${city.ch_country_name}`
+    }));
+};
+
 export const newsApi = {
   getHeadlines: async (city, lang = 'zh', country) => {
-    const endpoint = `/api/news/headlines?related_city=${city}" OR "${country}&lang=${lang}`;
+    let endpoint = `/api/news/headlines?related_city=${city}" OR "${country}&lang=${lang}`;
+    if (lang === 'zh') endpoint += `&published_country_code=tw`;
     const data = await request(endpoint);
     return formatNewsList(data);
   },
   getLatestNews: async (city, lang = 'zh', country) => {
-    const endpoint = `/api/news/latest-news?related_city=${city}" OR "${country}&lang=${lang}`;
+    let endpoint = `/api/news/latest-news?related_city=${city}" OR "${country}&lang=${lang}`;
+    if (lang === 'zh') endpoint += `&published_country_code=tw`;
     const data = await request(endpoint);
     return formatNewsList(data);
   },
   getMostRelevantNews: async (city, lang = 'zh', country) => {
-    const endpoint = `/api/news/relevant-news?related_city=${city}" OR "${country}&lang=${lang}`;
+    let endpoint = `/api/news/relevant-news?related_city=${city}" OR "${country}&lang=${lang}`;
+    if (lang === 'zh') endpoint += `&published_country_code=tw`;
     const data = await request(endpoint);
     return formatNewsList(data);
+  },
+  getSupportedCities: async () => {
+    const endpoint = `/api/news/support-city`;
+    const data = await request(endpoint);
+    return transformedCities(data);
   }
 };

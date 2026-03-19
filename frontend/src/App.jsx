@@ -9,7 +9,19 @@ import EmptyPage from "./components/modules/empty-page";
 import Header from "./components/common/header";
 import NavigationBar from "./components/common/navigation-bar";
 
+import { useEffect } from "react";
+
 function App() {
+
+  useEffect(() => {
+    const handler = (e) => {
+      console.log('瀏覽器已準備好顯示安裝提示');
+    };
+  
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
   return (
     <div className="app-container">
       <Header></Header>

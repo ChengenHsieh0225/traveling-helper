@@ -34,7 +34,7 @@ const formatForecast = (data, timespan) => {
       return {
         time: item.time,
         weather_code: item.weather_code,
-        temp: item.temp_max,
+        temp_max: item.temp_max,
         temp_min: item.temp_min,
         pop: item.pop,
         is_day: timespan === '24 小時' ? Boolean(item.is_day) : true

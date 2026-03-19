@@ -133,7 +133,8 @@ function WeatherPage({ isStarred, valueList }) {
                 key={`${cityFullname}-${item.time}`}
                 time={transformTime(item.time, timespan)}
                 weatherCode={item.weather_code}
-                temp={item.temp}
+                temp_max={item.temp_max}
+                temp_min={item.temp_min}
                 pop={item.pop}
                 isDay={item.is_day}
               ></WeatherSnapshot>

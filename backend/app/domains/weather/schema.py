@@ -1,5 +1,14 @@
 from pydantic import BaseModel
 
+class CityRead(BaseModel):
+    ch_name: str
+    en_name: str
+    ch_country_name: str | None
+    en_country_name: str | None
+    country_code: str | None
+    lat: float | None
+    lon: float | None
+
 class CityInfo(BaseModel):
     name: str
     country: str | None

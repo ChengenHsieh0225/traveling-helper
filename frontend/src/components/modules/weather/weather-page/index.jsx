@@ -5,17 +5,27 @@ import WeatherSnapshot from "../weather-snapshot";
 import WeatherDetail from "../weather-detail";
 
 import { useWeatherQuery } from "../../../../hooks/weather/useWeatherQuery";
-import { transformUvIndex, transformAQI, getWeatherDescription, getWeatherIconUrl, transformTime } from "../helper";
+import {
+  transformUvIndex,
+  transformAQI,
+  getWeatherDescription,
+  getWeatherIconUrl,
+  transformTime,
+} from "../helper";
 
-function WeatherPage({ isStarred }) {
-
+function WeatherPage({ isStarred, valueList }) {
   const {
-    city, setCity,
-    country, setCountry,
     timespan, setTimespan,
     weatherDetail,
-    forecast
+    forecast,
+    isSearching, setIsSearching,
+    searchTerm, setSearchTerm,
+    cityIndex, setCityIndex,
+    filteredCityList
   } = useWeatherQuery();
+
+  const cityFullname = `${filteredCityList[cityIndex]?.ch_name}, ${filteredCityList[cityIndex]?.ch_country_name}`;
+  const inputDisplay = isSearching ? searchTerm : cityFullname;
 
   return (
     <div className={styles.contentContainer}>
@@ -31,7 +41,39 @@ function WeatherPage({ isStarred }) {
               noPadding="true"
               noBackground="true"
             ></IconButton>
-            <p className="body-bold">{city}, {country}</p>
+            <div className={styles.searchContainer}>
+              <div className={styles.inputContainer}>
+                <span className={`body-bold ${styles.ghostSpan}`} aria-hidden="true">
+                  {inputDisplay}
+                </span>
+                <input
+                  className={`body-bold ${styles.searchInput}`}
+                  value={inputDisplay}
+                  onFocus={setIsSearching}
+                  onBlur={() => setTimeout(() => setIsSearching(false), 200)}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                ></input>
+              </div>
+              {isSearching && (
+                <select 
+                  className={styles.floatingSelect}
+                  value={cityIndex}
+                  size={Math.min(filteredCityList.length, 5)}
+                  onChange={(e) => {
+                    const index = e.target.selectedIndex;
+                    setCityIndex(index);
+                  }}
+                >
+                  {filteredCityList.map((item, index) => {
+                    return (
+                      <option key={index} value={index}>
+                        {item.ch_name}, {item.ch_country_name}
+                      </option>
+                    )
+                  })}
+                </select>
+              )}
+            </div>
             <IconButton
               height="25px"
               isActive="true"
@@ -55,25 +97,29 @@ function WeatherPage({ isStarred }) {
                 src={getWeatherIconUrl(weatherDetail.weather_code)}
               ></img>
             </div>
-            <p className="body-bold">{getWeatherDescription(weatherDetail.weather_code)}</p>
+            <p className="body-bold">
+              {getWeatherDescription(weatherDetail.weather_code)}
+            </p>
           </div>
           <div className={styles.tempContainer}>
             <p className="h2">{weatherDetail.temp}°C</p>
-            <p className="body-bold">體感溫度 {weatherDetail.apparent_temp}°C</p>
+            <p className="body-bold">
+              體感溫度 {weatherDetail.apparent_temp}°C
+            </p>
           </div>
         </div>
       </div>
       <div className={styles.forcastContainer}>
         <div className={styles.timespanContainer}>
           <TextButton
-            isActive={timespan === '24 小時'}
+            isActive={timespan === "24 小時"}
             fontStyle="caption"
             borderStyle="round"
             fontContent="24 小時"
             onClick={setTimespan}
           ></TextButton>
           <TextButton
-            isActive={timespan === '未來 7 天'}
+            isActive={timespan === "未來 7 天"}
             fontStyle="caption"
             borderStyle="round"
             fontContent="未來 7 天"
@@ -83,14 +129,14 @@ function WeatherPage({ isStarred }) {
         <div className={styles.snapshotContainer}>
           {forecast.map((item) => {
             return (
-            <WeatherSnapshot
-              key={`${city}-${item.time}`}
-              time={transformTime(item.time, timespan)}
-              weatherCode={item.weather_code}
-              temp={item.temp}
-              pop={item.pop}
-              isDay={item.is_day}
-            ></WeatherSnapshot>
+              <WeatherSnapshot
+                key={`${cityFullname}-${item.time}`}
+                time={transformTime(item.time, timespan)}
+                weatherCode={item.weather_code}
+                temp={item.temp}
+                pop={item.pop}
+                isDay={item.is_day}
+              ></WeatherSnapshot>
             );
           })}
         </div>

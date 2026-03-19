@@ -46,14 +46,21 @@ const formatForecast = (data, timespan) => {
 export const weatherApi = {
   getDetail: async (city, countryCode = "") => {
     // const endpoint = `/api/weather/details?city=${city}&countryCode=${countryCode}`;
-    const endpoint = `/api/weather/details?city=${"New Taipei"}`;
+    const endpoint = `/api/weather/details?city=${city}`;
+    // const endpoint = `/api/weather/details?city=${"New Taipei"}`;
     const data = await request(endpoint);
     return formatDetail(data);
   },
   getForecast: async (city, timespan, countryCode = "") => {
     // const endpoint = `/api/weather/forecast?city=${city}&countryCode=${countryCode}&timespan=${timespanMapping(timespan)}`;
-    const endpoint = `/api/weather/forecast?city=${"New Taipei"}&timespan=${timespanMapping(timespan)}`;
+    const endpoint = `/api/weather/forecast?city=${city}&timespan=${timespanMapping(timespan)}`;
+    // const endpoint = `/api/weather/forecast?city=${"New Taipei"}&timespan=${timespanMapping(timespan)}`;
     const data = await request(endpoint);
     return formatForecast(data, timespan);
   },
+  getSupportedCities: async () => {
+    const endpoint = `/api/weather/support-city`;
+    const data = await request(endpoint);
+    return data;
+  }
 };

@@ -20,12 +20,26 @@ def get_dates(timespan: str):
     return []
 
 async def fetch_single_rate(client: AsyncClient, from_ccy: str, to_ccy: str, date: str):
-    data = await currency_client.get_rate_with_date(client, from_ccy=from_ccy, to_ccy=to_ccy, date=date)
-    rate = data.get(from_ccy).get(to_ccy)
-    return {
-        'time': date,
-        'rate': rate
-    }
+    try:
+        data = await currency_client.get_rate_with_date(client, from_ccy=from_ccy, to_ccy=to_ccy, date=date)
+        rate = data.get(from_ccy).get(to_ccy)
+        return {
+            'time': date,
+            'rate': rate
+        }
+    except Exception as e:
+        target_date = datetime.strptime(date, "%Y-%m-%d")
+
+        for i in range(1, 7):
+            offset_date = (target_date - relativedelta(days=i)).strftime("%Y-%m-%d")
+            data = await currency_client.get_rate_with_date(client, from_ccy=from_ccy, to_ccy=to_ccy, date=offset_date)
+            if data:
+                return {
+                    'time': offset_date,
+                    'rate': data.get(from_ccy).get(to_ccy)
+                }
+        return None
+    
 
 async def fetch_latest_rate(client: AsyncClient, from_ccy: str, to_ccy: str):
     data = await currency_client.get_latest_rate(client, from_ccy=from_ccy, to_ccy=to_ccy)
@@ -40,7 +54,9 @@ async def get_rate_history(client: AsyncClient, from_ccy: str, to_ccy: str, time
     dates = get_dates(timespan)
 
     tasks = [fetch_single_rate(client, from_ccy, to_ccy, date) for date in dates]
-    date_to_rate_list = await asyncio.gather(*tasks)
+    results = await asyncio.gather(*tasks)
+
+    date_to_rate_list = [res for res in results if res is not None]
 
     return date_to_rate_list
 

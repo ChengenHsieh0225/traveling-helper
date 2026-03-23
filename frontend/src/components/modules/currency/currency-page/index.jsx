@@ -42,7 +42,7 @@ function CurrencyPage() {
           <input
             className={`body-bold ${styles.input}`}
             placeholder="請輸入數值"
-            type="nuber"
+            type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           ></input>

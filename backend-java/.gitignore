@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Ignore all the key files ###
+*/src/main/resources/certs/*.pem
+*/src/main/resources/certs/*.der
+*/src/main/resources/application-secrets.yml

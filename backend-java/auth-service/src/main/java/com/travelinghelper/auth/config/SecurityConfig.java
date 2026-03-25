@@ -25,16 +25,14 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // 允許 OAuth2 相關路徑與首頁
-                .requestMatchers("/", "/login/**", "/oauth2/**").permitAll()
-                // 其他所有請求（包含 /auth/test）都必須驗證
+                .requestMatchers("/", "/login/**", "/oauth2/**", "/auth/test").permitAll()
                 .anyRequest().authenticated()
             )
-            // 1. 負責「產生」Token 的登入邏輯
+            // Generate the JWT token
             .oauth2Login(oauth2 -> oauth2
                 .successHandler(oAuth2SuccessHandler)
             )
-            // 2. 負責「驗證」Token 的 API 邏輯
+            // Verify the http request by the JWT token
             .oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(Customizer.withDefaults())
             );

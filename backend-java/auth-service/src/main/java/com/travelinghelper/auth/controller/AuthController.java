@@ -9,8 +9,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
     @GetMapping("/test")
-    public String getUserInfo(@AuthenticationPrincipal Jwt jwt) {
-        String username = jwt.getSubject();
-        return "Hello, " + username + ". This is secured data.";
+    public String getUserInfo(@RequestParam String token, @RequestParam String name) {
+        return "Hello, " + name + ". This is your token: " + token;
+    }
+    @PostMapping("/user")
+    public void createUser() {
+
+    }
+    @PutMapping("/user")
+    public void updateUser(String name) {
+
     }
 }

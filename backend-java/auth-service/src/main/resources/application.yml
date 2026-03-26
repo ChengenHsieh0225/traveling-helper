@@ -14,3 +14,5 @@ spring:
       resourceserver:
         jwt:
           public-key-location: classpath:certs/public_key.pem
+server:
+  port: 8080

@@ -17,7 +17,6 @@ public class AddItemRequest {
     @NotNull private ItineraryType type;
     private String description;
 
-    private LocalDate date;
     private Integer relativeDate;
 
     private LocalTime startTime;

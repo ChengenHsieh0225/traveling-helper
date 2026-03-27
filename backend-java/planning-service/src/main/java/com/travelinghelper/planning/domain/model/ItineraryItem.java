@@ -18,7 +18,7 @@ public class ItineraryItem {
     private String title;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private ItineraryType type;
 
     @Column(name = "relative_date", nullable = false)
@@ -31,9 +31,16 @@ public class ItineraryItem {
     private String description;
 
     ItineraryItem(String title, ItineraryType type, Integer relativeDate, TimeSlot timeSlot, String description) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("Title is required");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Itinerary Type is required");
+        }
         if (relativeDate == null || relativeDate < 1) {
             throw new IllegalArgumentException("RelativeDate must be at least 1");
         }
+
         this.id = UUID.randomUUID().toString();
         this.title = title;
         this.type = type;
@@ -53,21 +60,24 @@ public class ItineraryItem {
         this.timeSlot = newTimeSlot;
     }
 
-    void updateTitle(String title) {
-        if (title == null || title.isBlank()) {
+    void updateTitle(String newTitle) {
+        if (newTitle == null || newTitle.isBlank()) {
             throw new IllegalArgumentException("Title cannot be empty");
         }
-        this.title = title;
+        this.title = newTitle;
     }
 
-    void updateDescription(String description) {
-        if (description != null && description.length() > 500) {
+    void updateDescription(String newDescription) {
+        if (newDescription != null && newDescription.length() > 500) {
             throw new IllegalArgumentException("Description too long");
         }
-        this.description = description;
+        this.description = newDescription;
     }
 
-    void updateRelativeDate(Integer relativeDate) {
-        this.relativeDate = relativeDate;
+    void updateRelativeDate(Integer newRelativeDate) {
+        if (newRelativeDate == null || newRelativeDate < 1) {
+            throw new IllegalArgumentException("RelativeDate must be at least 1");
+        }
+        this.relativeDate = newRelativeDate;
     }
 }

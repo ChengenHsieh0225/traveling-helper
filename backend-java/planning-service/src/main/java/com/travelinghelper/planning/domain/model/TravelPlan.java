@@ -20,7 +20,7 @@ public class TravelPlan {
     @Id
     private String id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false, updatable = false)
     private String userId;
 
     @Column(nullable = false)
@@ -42,7 +42,15 @@ public class TravelPlan {
     @Column
     private Visibility visibility = Visibility.PRIVATE;
 
+    // Constructors and factory methods
     private TravelPlan(String userId, String title, LocalDate startDate, LocalDate endDate, Integer totalDays) {
+        if (userId == null || userId.isBlank()) {
+            throw new IllegalArgumentException("UserId is required");
+        }
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("Title is required");
+        }
+
         this.id = UUID.randomUUID().toString();
         this.userId = userId;
         this.title = title;
@@ -66,6 +74,61 @@ public class TravelPlan {
         return new TravelPlan(userId, title, start, end, days);
     }
 
+    // Update methods
+    public void updateTitle(String newTitle) {
+        if (newTitle == null || newTitle.isBlank()) {
+            throw new IllegalArgumentException("Title cannot be empty");
+        }
+        this.title = newTitle;
+    }
+
+    public void updatePreciseDates(LocalDate newStart, LocalDate newEnd) {
+        if (newStart == null || newEnd == null) {
+            throw new IllegalArgumentException("Both start and end dates must be provided for precise plans");
+        }
+        if (newStart.isAfter(newEnd)) {
+            throw new IllegalArgumentException("Start date must be before or equal to end date");
+        }
+
+        this.startDate = newStart;
+        this.endDate = newEnd;
+
+        int newTotalDays = (int) ChronoUnit.DAYS.between(newStart, newEnd) + 1;
+
+        applyNewTotalDays(newTotalDays);
+    }
+
+    public void updateTotalDays(Integer newTotalDays) {
+        if (newTotalDays == null || newTotalDays <= 0) {
+            throw new IllegalArgumentException("Total days must be a positive integer");
+        }
+        if (this.startDate != null) {
+            this.endDate = this.startDate.plusDays(newTotalDays - 1);
+        }
+        applyNewTotalDays(newTotalDays);
+    }
+
+    public void changeVisibility(Visibility newVisibility) {
+        if (newVisibility == null) {
+            throw new IllegalArgumentException("Visibility cannot be null");
+        }
+        this.visibility = newVisibility;
+    }
+
+    private void applyNewTotalDays(Integer newTotalDays) {
+        boolean hasInvalidItems = this.items.stream()
+            .anyMatch(item -> item.getRelativeDate() > newTotalDays);
+
+        if (hasInvalidItems) {
+            throw new IllegalStateException(
+                "Cannot shorten plan duration: Some itinerary items are scheduled beyond the new total days."
+            );
+        }
+
+        this.totalDays = newTotalDays;
+    }
+
+    // Create and update ItineraryItem
     public void addItemByRelativeDate(String title, ItineraryType type, Integer relativeDate, TimeSlot timeSlot, String description) {
         ItineraryItem newItem = ItineraryItem.createWithRelativeDate(title, type, relativeDate, timeSlot, description);
         validateItemConsistency(newItem);
@@ -73,10 +136,12 @@ public class TravelPlan {
     }
 
     private void validateItemConsistency(ItineraryItem item) {
-    }
-
-    public void changeVisibility(Visibility newVisibility) {
-        this.visibility = newVisibility;
+        if (item.getRelativeDate() > this.totalDays) {
+            throw new IllegalArgumentException(
+                String.format("Relative date %d exceeds total days %d",
+                    item.getRelativeDate(), this.totalDays)
+            );
+        }
     }
 
     // Update the inner items
@@ -89,6 +154,9 @@ public class TravelPlan {
 
     public void updateItemRelativeDate(String itemId, Integer newRelativeDate) {
         ItineraryItem item = findItemOrThrow(itemId);
+        if (newRelativeDate > this.totalDays) {
+            throw new IllegalArgumentException("The relative date exceeds plan duration");
+        }
         item.updateRelativeDate(newRelativeDate);
     }
 

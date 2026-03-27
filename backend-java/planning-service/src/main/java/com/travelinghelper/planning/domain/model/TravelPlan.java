@@ -66,12 +66,6 @@ public class TravelPlan {
         return new TravelPlan(userId, title, start, end, days);
     }
 
-    public void addItemByDate(String title, ItineraryType type, LocalDate date, TimeSlot timeSlot, String description) {
-        ItineraryItem newItem = ItineraryItem.createWithDate(title, type, date, timeSlot, description);
-        validateItemConsistency(newItem);
-        this.items.add(newItem);
-    }
-
     public void addItemByRelativeDate(String title, ItineraryType type, Integer relativeDate, TimeSlot timeSlot, String description) {
         ItineraryItem newItem = ItineraryItem.createWithRelativeDate(title, type, relativeDate, timeSlot, description);
         validateItemConsistency(newItem);
@@ -79,26 +73,6 @@ public class TravelPlan {
     }
 
     private void validateItemConsistency(ItineraryItem item) {
-        validateDateRange(item.getDate(), item.getRelativeDate());
-    }
-
-    private void validateDateRange(LocalDate itemDate, Integer relativeDate) {
-        // Check if the itemDate is within the plan's dates
-        if (itemDate != null) {
-            if (startDate == null) {
-                throw new IllegalArgumentException("Cannot add dated item to a plan without dates");
-            }
-            if (itemDate.isBefore(startDate) || itemDate.isAfter(endDate)) {
-                throw new IllegalArgumentException("Item date is outside the plan period");
-            }
-        }
-
-        // Check if the item's relativeDate is within the plan's total days
-        if (relativeDate != null) {
-            if (relativeDate < 1 || relativeDate > totalDays) {
-                throw new IllegalArgumentException("Relative date must be between 1 and " + totalDays);
-            }
-        }
     }
 
     public void changeVisibility(Visibility newVisibility) {
@@ -113,10 +87,9 @@ public class TravelPlan {
             .orElseThrow(() -> new IllegalArgumentException("Itinerary item not found: " + itemId));
     }
 
-    public void updateItemDate(String itemId, LocalDate newDate, Integer newRelativeDate) {
+    public void updateItemRelativeDate(String itemId, Integer newRelativeDate) {
         ItineraryItem item = findItemOrThrow(itemId);
-        validateDateRange(newDate, newRelativeDate);
-        item.updateDateContext(newDate, newRelativeDate);
+        item.updateRelativeDate(newRelativeDate);
     }
 
     public void updateItemTitle(String itemId, String newTitle) {

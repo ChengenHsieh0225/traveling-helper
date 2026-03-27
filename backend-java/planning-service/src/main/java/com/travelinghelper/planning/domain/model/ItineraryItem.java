@@ -3,7 +3,6 @@ package com.travelinghelper.planning.domain.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -22,10 +21,7 @@ public class ItineraryItem {
     @Column(nullable = false)
     private ItineraryType type;
 
-    @Column
-    private LocalDate date;
-
-    @Column(name = "relative_date")
+    @Column(name = "relative_date", nullable = false)
     private Integer relativeDate;
 
     @Embedded
@@ -34,25 +30,20 @@ public class ItineraryItem {
     @Column
     private String description;
 
-    ItineraryItem(String title, ItineraryType type, LocalDate date, Integer relativeDate, TimeSlot timeSlot, String description) {
-        if (date == null && relativeDate == null) {
-            throw new IllegalArgumentException("Either 'date' or 'relativeDate' must be provided.");
+    ItineraryItem(String title, ItineraryType type, Integer relativeDate, TimeSlot timeSlot, String description) {
+        if (relativeDate == null || relativeDate < 1) {
+            throw new IllegalArgumentException("RelativeDate must be at least 1");
         }
         this.id = UUID.randomUUID().toString();
         this.title = title;
         this.type = type;
-        this.date = date;
         this.relativeDate = relativeDate;
         this.timeSlot = timeSlot;
         this.description = description;
     }
 
-    static ItineraryItem createWithDate(String title, ItineraryType type, LocalDate date, TimeSlot timeSlot, String description) {
-        return new ItineraryItem(title, type, date, null, timeSlot, description);
-    }
-
     static ItineraryItem createWithRelativeDate(String title, ItineraryType type, Integer relativeDate, TimeSlot timeSlot, String description) {
-        return new ItineraryItem(title, type, null, relativeDate, timeSlot, description);
+        return new ItineraryItem(title, type, relativeDate, timeSlot, description);
     }
 
     void updateTimeSlot(TimeSlot newTimeSlot) {
@@ -76,8 +67,7 @@ public class ItineraryItem {
         this.description = description;
     }
 
-    void updateDateContext(LocalDate date, Integer relativeDate) {
-        this.date = date;
+    void updateRelativeDate(Integer relativeDate) {
         this.relativeDate = relativeDate;
     }
 }

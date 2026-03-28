@@ -9,10 +9,14 @@ import com.travelinghelper.planning.domain.model.TimeSlot;
 import com.travelinghelper.planning.domain.model.TravelPlan;
 import com.travelinghelper.planning.domain.repository.TravelPlanRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class PlanningApplicationService {
 
-    private TravelPlanRepository planRepository;
+    private final TravelPlanRepository planRepository;
 
     @Transactional
     public String createPlan(CreatePlanRequest request, String userId) {

@@ -1,2 +1,10 @@
+spring:
+  profiles:
+    include: secrets
+  application:
+    name: planning
 server:
   port: 8081
+logging:
+  level:
+    org.springframework.web: DEBUG

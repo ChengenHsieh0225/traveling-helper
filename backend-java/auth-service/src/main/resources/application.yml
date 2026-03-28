@@ -16,3 +16,6 @@ spring:
           public-key-location: classpath:certs/public_key.pem
 server:
   port: 8080
+logging:
+  level:
+    org.springframework.web: DEBUG

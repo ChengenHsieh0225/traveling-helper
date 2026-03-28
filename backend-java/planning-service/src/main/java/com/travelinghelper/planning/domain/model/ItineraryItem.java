@@ -30,6 +30,7 @@ public class ItineraryItem {
     @Column
     private String description;
 
+    // Constructors and factory methods
     ItineraryItem(String title, ItineraryType type, Integer relativeDate, TimeSlot timeSlot, String description) {
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("Title is required");
@@ -51,6 +52,11 @@ public class ItineraryItem {
 
     static ItineraryItem createWithRelativeDate(String title, ItineraryType type, Integer relativeDate, TimeSlot timeSlot, String description) {
         return new ItineraryItem(title, type, relativeDate, timeSlot, description);
+    }
+
+    // State methods for asking
+    boolean isPreciseTime() {
+        return this.timeSlot.isPrecise();
     }
 
     void updateTimeSlot(TimeSlot newTimeSlot) {

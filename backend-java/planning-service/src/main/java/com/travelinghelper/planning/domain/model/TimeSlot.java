@@ -48,4 +48,8 @@ public class TimeSlot {
         if (hour >= 12 && hour < 18) return TimePeriod.AFTERNOON;
         return TimePeriod.EVENING;
     }
+
+    public boolean isPrecise() {
+        return this.startTime != null && this.endTime != null;
+    }
 }

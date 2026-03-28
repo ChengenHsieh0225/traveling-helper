@@ -74,6 +74,11 @@ public class TravelPlan {
         return new TravelPlan(userId, title, start, end, days);
     }
 
+    // State methods for asking
+    public boolean isPrecise() {
+        return this.startDate != null && this.endDate != null;
+    }
+
     // Update methods
     public void updateTitle(String newTitle) {
         if (newTitle == null || newTitle.isBlank()) {
@@ -173,5 +178,15 @@ public class TravelPlan {
     public void updateItemTimeSlot(String itemId, TimeSlot newTimeSlot) {
         ItineraryItem item = findItemOrThrow(itemId);
         item.updateTimeSlot(newTimeSlot);
+    }
+
+    public void removeItem(String itemId) {
+        if (itemId == null) {
+            throw new IllegalArgumentException("Item ID cannot be null");
+        }
+        boolean removed = this.items.removeIf(item -> item.getId().equals(itemId));
+        if (!removed) {
+            throw new IllegalArgumentException("Itinerary item not found: " + itemId);
+        }
     }
 }

@@ -2,24 +2,22 @@ package com.travelinghelper.planning.application.dto.plan;
 
 import com.travelinghelper.planning.application.dto.item.ItemResponse;
 import com.travelinghelper.planning.domain.model.Visibility;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
-@Setter
-public class PlanResponse {
-    private String id;
-    private String userId;
-    private String title;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Integer totalDays;
-    private Visibility visibility;
+@Builder
+public record PlanResponse (
+    String id,
+    String userId,
+    String title,
+    LocalDate startDate,
+    LocalDate endDate,
+    Integer totalDays,
+    Visibility visibility,
 
-    private List<ItemResponse> items;
+    List<ItemResponse> items,
 
-    private Boolean isPrecise;
-}
+    Boolean isPrecise
+) {}

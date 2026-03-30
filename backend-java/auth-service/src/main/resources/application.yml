@@ -1,21 +1,41 @@
 spring:
-  profiles:
-    include: secrets
   application:
     name: auth
+
+  # Database
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:password}
+    driver-class-name: org.postgresql.Driver
+
+  # Google OAuth
   security:
     oauth2:
       client:
         registration:
           google:
+            client-id: ${GOOGLE_CLIENT_ID:your-placeholder-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:your-placeholder-secret}
             scope:
               - email
               - profile
       resourceserver:
         jwt:
-          public-key-location: classpath:certs/public_key.pem
+          public-key-location: ${JWT_PUBLIC_KEY_PATH:classpath:certs/public_key.pem}
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp.use_jdbc_metadata_defaults: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
+
 logging:
   level:
     org.springframework.web: DEBUG

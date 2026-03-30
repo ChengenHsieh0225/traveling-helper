@@ -9,6 +9,14 @@ spring:
     password: ${DB_PASS:password}
     driver-class-name: org.postgresql.Driver
 
+  # Google OAuth
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: ${JWT_PUBLIC_KEY_PATH:classpath:certs/public_key.pem}
+
+
   jpa:
     properties:
       hibernate:

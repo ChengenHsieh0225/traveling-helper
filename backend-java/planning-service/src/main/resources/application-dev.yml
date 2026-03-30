@@ -1,0 +1,18 @@
+spring:
+  # Using mock jwt decoder instead of the public-key for dev mode.
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: "" # clear the path
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    root: INFO
+    com.travelinghelper.planning: DEBUG
+    org.springframework.security: DEBUG

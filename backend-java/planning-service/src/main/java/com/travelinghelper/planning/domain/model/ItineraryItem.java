@@ -55,7 +55,7 @@ public class ItineraryItem {
     }
 
     // State methods for asking
-    boolean isPreciseTime() {
+    public boolean isPreciseTime() {
         return this.timeSlot.isPrecise();
     }
 

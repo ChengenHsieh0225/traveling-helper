@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    # Using local MySQL for dev mode
+    url: jdbc:mysql://localhost:3306/social_db?createDatabaseIfNotExist=true
+    username: root
+    password: ${LOCAL_MYSQL_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Using mock jwt decoder instead of the public-key for dev mode.
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: "" # clear the path
+
+  jpa:
+    properties:
+      hibernate:
+        # Overwrite the dialect with MySQL
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    root: INFO
+    com.travelinghelper.planning: DEBUG
+    org.springframework.security: DEBUG

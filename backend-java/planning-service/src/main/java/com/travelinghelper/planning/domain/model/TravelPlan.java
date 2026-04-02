@@ -39,6 +39,7 @@ public class TravelPlan {
     @JoinColumn(name = "plan_id")
     private List<ItineraryItem> items = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
     @Column
     private Visibility visibility = Visibility.PRIVATE;
 

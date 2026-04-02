@@ -1,5 +1,6 @@
 package com.travelinghelper.social.domain.model;
 
+import com.travelinghelper.social.application.dto.ItineraryProjectionDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -39,8 +40,14 @@ public class SharedPlan {
         plan.visibility = visibility;
         return plan;
     }
-    // TODO: synchronize shared itinerary items from dtos
-    public void syncItinerary() {
+    public void syncItinerary(List<ItineraryData> itemsData) {
+        this.items.clear();
+        itemsData.forEach(data -> {
+            SharedItineraryItem item = new SharedItineraryItem(
+                data.id(), data.plan(), data.title(), data.relativeDate(), data.description(), data.type(), data.timePeriod(), data.durationText()
+            );
+            this.items.add(item);
+        });
     }
 
     public void incrementCopyCount() {

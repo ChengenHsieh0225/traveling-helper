@@ -23,6 +23,15 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  rabbitmq:
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 2000ms # wait for 2 seconds before first retry
+          multiplier: 2.0 # double the waiting time after each failure
+
 server:
   port: ${SERVER_PORT:8080}
 

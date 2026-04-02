@@ -1,6 +1,5 @@
 package com.travelinghelper.social.domain.model;
 
-import com.travelinghelper.social.application.dto.ItineraryProjectionDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,13 +24,13 @@ public class SharedPlan {
     private List<SharedItineraryItem> items = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private Visibility visibility;
+    private SocialVisibility visibility;
 
     // Hold by social-service
     private Integer copyCount = 0;
     private Integer likeCount = 0;
 
-    public static SharedPlan create(String id, String userId, String title, Integer totalDays, Visibility visibility) {
+    public static SharedPlan create(String id, String userId, String title, Integer totalDays, SocialVisibility visibility) {
         SharedPlan plan = new SharedPlan();
         plan.id = id;
         plan.userId = userId;

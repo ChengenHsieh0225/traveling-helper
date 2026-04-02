@@ -39,7 +39,8 @@ public class PlanningApplicationService {
 
     @Transactional
     public void addItemToPlan(String planId, AddItemRequest request, String userId) {
-        TravelPlan plan = planRepository.findById(planId).orElseThrow();
+        TravelPlan plan = planRepository.findById(planId)
+            .orElseThrow(() -> new IllegalArgumentException("Plan not found"));
 
         validateOwnership(plan, userId);
 

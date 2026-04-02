@@ -43,7 +43,7 @@ public class SharedPlan {
         this.items.clear();
         itemsData.forEach(data -> {
             SharedItineraryItem item = new SharedItineraryItem(
-                data.id(), data.plan(), data.title(), data.relativeDate(), data.description(), data.type(), data.timePeriod(), data.durationText()
+                data.id(), this, data.title(), data.relativeDate(), data.description(), data.type(), data.timePeriod(), data.durationText()
             );
             this.items.add(item);
         });

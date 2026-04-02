@@ -25,7 +25,9 @@ public class SharedItineraryItem {
     @Enumerated(EnumType.STRING)
     private SharedItineraryType type;
 
+    @Enumerated(EnumType.STRING)
     private TimePeriod timePeriod;
+
     private String durationText; // eg., 2h 30m, 45m
 
     SharedItineraryItem(String id, SharedPlan plan, String title, Integer relativeDate, String description, SharedItineraryType type, TimePeriod timePeriod, String durationText) {

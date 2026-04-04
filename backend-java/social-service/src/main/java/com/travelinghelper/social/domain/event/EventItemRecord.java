@@ -1,9 +1,5 @@
 package com.travelinghelper.social.domain.event;
 
-import com.travelinghelper.social.domain.model.SharedItineraryType;
-import com.travelinghelper.social.domain.model.TimePeriod;
-import jakarta.validation.constraints.NotBlank;
-
 import java.time.LocalTime;
 
 public record EventItemRecord (

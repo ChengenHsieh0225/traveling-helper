@@ -43,7 +43,7 @@ public class RabbitConfig {
 
         // Map the label to local event classes
         Map<String, Class<?>> idClassMapping = new HashMap<>();
-        idClassMapping.put("social.plan.published", PlanPublishedEvent.class);
+        idClassMapping.put("planning.plan.published", PlanPublishedEvent.class);
 
         classMapper.setIdClassMapping(idClassMapping);
         converter.setClassMapper(classMapper);

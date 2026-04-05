@@ -2,7 +2,7 @@ package com.travelinghelper.social.infrastructure.config;
 
 import com.travelinghelper.social.domain.event.PlanPublishedEvent;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.support.converter.DefaultClassMapper;
+import org.springframework.amqp.support.converter.DefaultJacksonJavaTypeMapper;
 import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,15 +38,15 @@ public class RabbitConfig {
     public JacksonJsonMessageConverter messageConverter() {
         JacksonJsonMessageConverter converter = new JacksonJsonMessageConverter();
 
-        // Create a class mapper from event classes defined in other microservices
-        DefaultClassMapper classMapper = new DefaultClassMapper();
+        // Create a type mapper from event classes defined in other microservices
+        DefaultJacksonJavaTypeMapper typeMapper = new DefaultJacksonJavaTypeMapper();
 
         // Map the label to local event classes
         Map<String, Class<?>> idClassMapping = new HashMap<>();
         idClassMapping.put("planning.plan.published", PlanPublishedEvent.class);
 
-        classMapper.setIdClassMapping(idClassMapping);
-        converter.setClassMapper(classMapper);
+        typeMapper.setIdClassMapping(idClassMapping);
+        converter.setJavaTypeMapper(typeMapper);
 
         return converter;
     }

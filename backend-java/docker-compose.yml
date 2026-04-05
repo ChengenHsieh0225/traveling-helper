@@ -1,21 +1,36 @@
 services:
   # ---------------------------------------------------------
+  # MySQL Service
+  # ---------------------------------------------------------
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      - MYSQL_DATABASE=traveling_helper
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - traveling-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------
+  # RabbitMQ Service
+  # ---------------------------------------------------------
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-server
+    networks:
+      - traveling-network
+
+  # ---------------------------------------------------------
   # Auth Service
   # ---------------------------------------------------------
   auth-service:
-    build:
-      context: .
-      dockerfile: auth-service/Dockerfile
     container_name: auth-service
-    ports:
-      - "8080:8080"
-    environment:
-      - DB_URL=${DB_URL}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-      - SERVER_PORT=8080
     networks:
       - traveling-network
 
@@ -23,23 +38,21 @@ services:
   # Planning Service
   # ---------------------------------------------------------
   planning-service:
-    build:
-      context: .
-      dockerfile: planning-service/Dockerfile
     container_name: planning-service
-    ports:
-      - "8081:8080"
-    environment:
-      - DB_URL=${DB_URL}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
-      # To connect to auth-service within the same network
-#      - AUTH_SERVICE_URL=http://auth-service:8080
-#    depends_on:
-#      - auth-service
+    networks:
+      - traveling-network
+
+  # ---------------------------------------------------------
+  # Social Service
+  # ---------------------------------------------------------
+  social-service:
+    container_name: social-service
     networks:
       - traveling-network
 
 networks:
   traveling-network:
     driver: bridge
+
+volumes:
+  mysql_data:

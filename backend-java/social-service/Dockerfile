@@ -9,11 +9,11 @@ COPY social-service/pom.xml ./social-service/
 RUN mvn dependency:go-offline -B
 
 COPY . .
-RUN mvn clean package -DskipTests -pl auth-service -am
+RUN mvn clean package -DskipTests -pl social-service -am
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/auth-service/target/*.jar app.jar
+COPY --from=build /app/social-service/target/*.jar app.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]

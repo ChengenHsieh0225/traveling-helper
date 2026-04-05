@@ -4,6 +4,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY auth-service/pom.xml ./auth-service/
 COPY planning-service/pom.xml ./planning-service/
+COPY social-service/pom.xml ./social-service/
 
 RUN mvn dependency:go-offline -B
 

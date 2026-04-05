@@ -1,9 +1,9 @@
 spring:
   datasource:
     # Using local MySQL for dev mode
-    url: jdbc:mysql://localhost:3306/planning_db?createDatabaseIfNotExist=true
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/planning_db?createDatabaseIfNotExist=true}
     username: root
-    password: ${LOCAL_MYSQL_PASS}
+    password: ${MYSQL_PASS}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   # Using mock jwt decoder instead of the public-key for dev mode.
@@ -23,10 +23,10 @@ spring:
       ddl-auto: update
 
   rabbitmq:
-    host: localhost
+    host: ${RABBITMQ_URL:localhost}
     port: 5672
-    username: guest
-    password: guest
+    username: ${RABBITMQ_DEFAULT_USER:guest}
+    password: ${RABBITMQ_DEFAULT_PASS:guest}
 
 logging:
   level:

@@ -1,17 +1,10 @@
 spring:
   datasource:
     # Using local MySQL for dev mode
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/social_db?createDatabaseIfNotExist=true}
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/auth_db?createDatabaseIfNotExist=true}
     username: root
     password: ${MYSQL_PASS}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-  # Using mock jwt decoder instead of the public-key for dev mode.
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          public-key-location: "" # clear the path
 
   jpa:
     properties:

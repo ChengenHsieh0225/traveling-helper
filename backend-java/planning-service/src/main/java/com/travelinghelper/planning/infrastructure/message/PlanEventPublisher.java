@@ -1,7 +1,6 @@
 package com.travelinghelper.planning.infrastructure.message;
 
 import com.travelinghelper.planning.domain.event.PlanPublishedEvent;
-import com.travelinghelper.planning.infrastructure.config.RabbitConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;

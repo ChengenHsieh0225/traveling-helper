@@ -1,6 +1,10 @@
 package com.travelinghelper.social.infrastructure.config;
 
+import com.travelinghelper.social.domain.event.PlanDeletedEvent;
+import com.travelinghelper.social.domain.event.PlanHeaderUpdatedEvent;
+import com.travelinghelper.social.domain.event.PlanItineraryChangedEvent;
 import com.travelinghelper.social.domain.event.PlanPublishedEvent;
+import com.travelinghelper.social.infrastructure.message.MessagingConstants;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.support.converter.DefaultJacksonJavaTypeMapper;
 import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
@@ -12,26 +16,21 @@ import java.util.Map;
 
 @Configuration
 public class RabbitConfig {
-
-    public static final String SYNC_QUEUE = "social.sync-plan.queue";
-    public static final String PLANNING_EXCHANGE = "planning.exchange";
-    public static final String ROUTING_KEY = "plan.published";
-
     @Bean
     public Queue syncQueue() {
-        return QueueBuilder.durable(SYNC_QUEUE)
-            .withArgument("x-dead-letter-exchange", "social.dead.letter.exchange") // 設定死信佇列
+        return QueueBuilder.durable(MessagingConstants.SYNC_QUEUE)
+            .withArgument("x-dead-letter-exchange", "social.dead.letter.exchange") // Set the dead-letter queue (DLQ)
             .build();
     }
 
     @Bean
     public TopicExchange planningExchange() {
-        return new TopicExchange(PLANNING_EXCHANGE);
+        return new TopicExchange(MessagingConstants.EXCHANGE);
     }
 
     @Bean
     public Binding binding(Queue syncQueue, TopicExchange planningExchange) {
-        return BindingBuilder.bind(syncQueue).to(planningExchange).with(ROUTING_KEY);
+        return BindingBuilder.bind(syncQueue).to(planningExchange).with(MessagingConstants.RoutingKeys.PLAN_ALL_PATTERN);
     }
 
     @Bean
@@ -43,7 +42,10 @@ public class RabbitConfig {
 
         // Map the label to local event classes
         Map<String, Class<?>> idClassMapping = new HashMap<>();
-        idClassMapping.put("planning.plan.published", PlanPublishedEvent.class);
+        idClassMapping.put(MessagingConstants.TypeIds.PLAN_PUBLISHED, PlanPublishedEvent.class);
+        idClassMapping.put(MessagingConstants.TypeIds.PLAN_HEADER_UPDATED, PlanHeaderUpdatedEvent.class);
+        idClassMapping.put(MessagingConstants.TypeIds.PLAN_ITINERARY_CHANGED, PlanItineraryChangedEvent.class);
+        idClassMapping.put(MessagingConstants.TypeIds.PLAN_DELETED, PlanDeletedEvent.class);
 
         typeMapper.setIdClassMapping(idClassMapping);
         converter.setJavaTypeMapper(typeMapper);

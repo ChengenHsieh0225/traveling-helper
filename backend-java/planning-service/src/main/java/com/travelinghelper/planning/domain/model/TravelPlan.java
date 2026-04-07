@@ -1,21 +1,25 @@
 package com.travelinghelper.planning.domain.model;
 
+import com.travelinghelper.planning.domain.event.EventItemRecord;
+import com.travelinghelper.planning.domain.event.PlanPublishedEvent;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.AfterDomainEventPublication;
+import org.springframework.data.domain.DomainEvents;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "travel_plans")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TravelPlan {
+
+    // Fields
 
     @Id
     private String id;
@@ -43,6 +47,21 @@ public class TravelPlan {
     @Column
     private Visibility visibility = Visibility.PRIVATE;
 
+    @org.springframework.data.annotation.Transient
+    // Domain Event
+    @Transient
+    private final List<Object> domainEvents = new ArrayList<>();
+
+    @DomainEvents
+    public Collection<Object> domainEvents() {
+        return Collections.unmodifiableList(domainEvents);
+    }
+
+    @AfterDomainEventPublication
+    public void callback() {
+        this.domainEvents.clear();
+    }
+
     // Constructors and factory methods
     private TravelPlan(String userId, String title, LocalDate startDate, LocalDate endDate, Integer totalDays) {
         if (userId == null || userId.isBlank()) {
@@ -58,6 +77,17 @@ public class TravelPlan {
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalDays = totalDays;
+
+        this.domainEvents.add(PlanPublishedEvent.builder()
+                .id(this.getId())
+                .userId(this.getUserId())
+                .title(this.getTitle())
+                .startDate(this.getStartDate())
+                .endDate(this.getEndDate())
+                .totalDays(this.getTotalDays())
+                .visibility(this.getVisibility().name())
+                .items(new ArrayList<EventItemRecord>())
+            .build());
     }
 
     public static TravelPlan fuzzy(String userId, String title, Integer totalDays) {

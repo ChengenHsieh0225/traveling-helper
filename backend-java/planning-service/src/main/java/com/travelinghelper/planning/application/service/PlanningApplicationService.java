@@ -7,13 +7,10 @@ import com.travelinghelper.planning.application.dto.plan.CreatePlanRequest;
 import com.travelinghelper.planning.application.dto.plan.PlanResponse;
 import com.travelinghelper.planning.application.dto.plan.UpdatePlanRequest;
 import com.travelinghelper.planning.application.exception.PlanOwnershipException;
-import com.travelinghelper.planning.domain.event.EventItemRecord;
-import com.travelinghelper.planning.domain.event.PlanPublishedEvent;
 import com.travelinghelper.planning.domain.model.ItineraryItem;
 import com.travelinghelper.planning.domain.model.TimeSlot;
 import com.travelinghelper.planning.domain.model.TravelPlan;
 import com.travelinghelper.planning.domain.repository.TravelPlanRepository;
-import com.travelinghelper.planning.infrastructure.message.PlanEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,8 +24,6 @@ public class PlanningApplicationService {
 
     private final TravelPlanRepository planRepository;
 
-    private final PlanEventPublisher planEventPublisher;
-
     @Transactional
     public PlanResponse createPlan(CreatePlanRequest request, String userId) {
         TravelPlan plan = (request.startDate() != null && request.endDate() != null)
@@ -38,8 +33,6 @@ public class PlanningApplicationService {
         plan.changeVisibility(request.visibility());
 
         planRepository.save(plan);
-
-        planEventPublisher.publishPlanPublished(mapToPlanPublishedEvent(plan));
 
         return mapToPlanResponse(plan, false);
     }
@@ -191,34 +184,6 @@ public class PlanningApplicationService {
             .timePeriod(item.getTimeSlot().getTimePeriod())
             .isPreciseDate(plan.isPrecise())
             .isPreciseTime(item.isPreciseTime())
-            .build();
-    }
-
-
-    // Mappers for Domain Events
-    private PlanPublishedEvent mapToPlanPublishedEvent(TravelPlan plan) {
-        List<EventItemRecord> itemRecords = plan.getItems().stream()
-            .map(item -> EventItemRecord.builder()
-                .id(item.getId())
-                .title(item.getTitle())
-                .relativeDate(item.getRelativeDate())
-                .description(item.getDescription())
-                .type(item.getType().name())
-                .timePeriod(item.getTimeSlot().getTimePeriod().name())
-                .startTime(item.getTimeSlot().getStartTime())
-                .endTime(item.getTimeSlot().getEndTime())
-                .build())
-            .toList();
-
-        return PlanPublishedEvent.builder()
-            .id(plan.getId())
-            .userId(plan.getUserId())
-            .title(plan.getTitle())
-            .startDate(plan.getStartDate())
-            .endDate(plan.getEndDate())
-            .totalDays(plan.getTotalDays())
-            .visibility(plan.getVisibility().name())
-            .items(itemRecords)
             .build();
     }
 }

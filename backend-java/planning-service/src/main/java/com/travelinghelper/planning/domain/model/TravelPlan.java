@@ -1,6 +1,8 @@
 package com.travelinghelper.planning.domain.model;
 
 import com.travelinghelper.planning.domain.event.EventItemRecord;
+import com.travelinghelper.planning.domain.event.PlanHeaderUpdatedEvent;
+import com.travelinghelper.planning.domain.event.PlanItineraryChangedEvent;
 import com.travelinghelper.planning.domain.event.PlanPublishedEvent;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -60,6 +62,36 @@ public class TravelPlan {
     @AfterDomainEventPublication
     public void callback() {
         this.domainEvents.clear();
+    }
+
+    public void markAsHeaderUpdated() {
+        this.domainEvents.add(PlanHeaderUpdatedEvent.builder()
+                .id(this.getId())
+                .title(this.getTitle())
+                .startDate(this.getStartDate())
+                .endDate(this.getEndDate())
+                .totalDays(this.getTotalDays())
+                .visibility(this.getVisibility().name())
+            .build());
+    }
+
+    public void markAsItineraryChanged() {
+        List<EventItemRecord> itemRecords = this.getItems().stream()
+            .map(item -> EventItemRecord.builder()
+                .id(item.getId())
+                .title(item.getTitle())
+                .relativeDate(item.getRelativeDate())
+                .description(item.getDescription())
+                .type(item.getType().name())
+                .timePeriod(item.getTimeSlot().getTimePeriod().name())
+                .startTime(item.getTimeSlot().getStartTime())
+                .endTime(item.getTimeSlot().getEndTime())
+                .build())
+            .toList();
+        this.domainEvents.add(PlanItineraryChangedEvent.builder()
+                .id(this.getId())
+                .items(itemRecords)
+            .build());
     }
 
     // Constructors and factory methods

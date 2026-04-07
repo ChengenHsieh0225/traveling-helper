@@ -7,10 +7,12 @@ import com.travelinghelper.planning.application.dto.plan.CreatePlanRequest;
 import com.travelinghelper.planning.application.dto.plan.PlanResponse;
 import com.travelinghelper.planning.application.dto.plan.UpdatePlanRequest;
 import com.travelinghelper.planning.application.exception.PlanOwnershipException;
+import com.travelinghelper.planning.domain.event.PlanDeletedEvent;
 import com.travelinghelper.planning.domain.model.ItineraryItem;
 import com.travelinghelper.planning.domain.model.TimeSlot;
 import com.travelinghelper.planning.domain.model.TravelPlan;
 import com.travelinghelper.planning.domain.repository.TravelPlanRepository;
+import com.travelinghelper.planning.application.event.InternalApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import java.util.List;
 public class PlanningApplicationService {
 
     private final TravelPlanRepository planRepository;
+
+    private final InternalApplicationEventPublisher eventPublisher;
 
     @Transactional
     public PlanResponse createPlan(CreatePlanRequest request, String userId) {
@@ -51,6 +55,8 @@ public class PlanningApplicationService {
         plan.addItemByRelativeDate(request.title(), request.type(), request.relativeDate(), timeSlot, request.description());
 
         planRepository.save(plan);
+
+        plan.markAsItineraryChanged();
     }
 
     @Transactional
@@ -76,6 +82,8 @@ public class PlanningApplicationService {
 
         // Save
         planRepository.save(plan);
+
+        plan.markAsItineraryChanged();
     }
 
     @Transactional
@@ -93,6 +101,8 @@ public class PlanningApplicationService {
         if (request.visibility() != null) plan.changeVisibility(request.visibility());
 
         planRepository.save(plan);
+
+        plan.markAsHeaderUpdated();
     }
 
     @Transactional
@@ -102,6 +112,7 @@ public class PlanningApplicationService {
         validateOwnership(plan, userId);
         plan.removeItem(itemId);
         planRepository.save(plan);
+        plan.markAsItineraryChanged();
     }
 
     @Transactional
@@ -110,6 +121,10 @@ public class PlanningApplicationService {
             .orElseThrow(() -> new IllegalArgumentException("Plan not found"));
         validateOwnership(plan, userId);
         planRepository.deleteById(planId);
+
+        eventPublisher.publish(PlanDeletedEvent.builder()
+                .id(planId)
+            .build());
     }
 
     @Transactional(readOnly = true)

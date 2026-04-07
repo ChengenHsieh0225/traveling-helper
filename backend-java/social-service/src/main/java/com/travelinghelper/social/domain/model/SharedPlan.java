@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,11 @@ public class SharedPlan {
         plan.totalDays = totalDays;
         plan.visibility = visibility;
         return plan;
+    }
+    public void syncHeader(String title, Integer totalDays, SocialVisibility visibility) {
+        this.title = title;
+        this.totalDays = totalDays;
+        this.visibility = visibility;
     }
     public void syncItinerary(List<ItineraryData> itemsData) {
         this.items.clear();

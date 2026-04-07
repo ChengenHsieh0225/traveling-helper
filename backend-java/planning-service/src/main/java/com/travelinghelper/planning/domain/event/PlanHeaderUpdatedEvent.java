@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder
-public record PlanInfoUpdatedEvent (
+public record PlanHeaderUpdatedEvent(
     String id,
     String title,
     LocalDate startDate,

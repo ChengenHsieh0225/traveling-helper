@@ -1,5 +1,8 @@
 package com.travelinghelper.planning.infrastructure.config;
 
+import com.travelinghelper.planning.domain.event.PlanDeletedEvent;
+import com.travelinghelper.planning.domain.event.PlanHeaderUpdatedEvent;
+import com.travelinghelper.planning.domain.event.PlanItineraryChangedEvent;
 import com.travelinghelper.planning.domain.event.PlanPublishedEvent;
 import com.travelinghelper.planning.infrastructure.message.MessagingConstants;
 import org.springframework.amqp.core.TopicExchange;
@@ -29,6 +32,9 @@ public class RabbitConfig {
         // Map the label to local event classes
         Map<String, Class<?>> idClassMapping = new HashMap<>();
         idClassMapping.put(MessagingConstants.TypeIds.PLAN_PUBLISHED, PlanPublishedEvent.class);
+        idClassMapping.put(MessagingConstants.TypeIds.PLAN_HEADER_UPDATED, PlanHeaderUpdatedEvent.class);
+        idClassMapping.put(MessagingConstants.TypeIds.PLAN_ITINERARY_CHANGED, PlanItineraryChangedEvent.class);
+        idClassMapping.put(MessagingConstants.TypeIds.PLAN_DELETED, PlanDeletedEvent.class);
 
         typeMapper.setIdClassMapping(idClassMapping);
         converter.setJavaTypeMapper(typeMapper);

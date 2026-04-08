@@ -9,6 +9,7 @@ services:
       - MYSQL_DATABASE=traveling_helper
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./init/db.sql:/docker-entrypoint-initdb.d/db.sql
     networks:
       - traveling-network
     healthcheck:

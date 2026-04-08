@@ -16,8 +16,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
 
   # ---------------------------------------------------------
   # Auth Service
@@ -29,12 +29,19 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
-      - MYSQL_URL=jdbc:mysql://mysql-db:3306/auth_dev?createDatabaseIfNotExist=true
-      - MYSQL_PASS=${MYSQL_PASS}
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_URL=jdbc:mysql://mysql-db:3306/auth_prod
+      - DB_USER=root
+      - DB_PASS=${MYSQL_PASS}
+      - DB_DRIVER=${MYSQL_DRIVER}
+      - HIBERNATE_DIALECT=${MYSQL_HIBERNATE_DIALECT}
       - SPRING_RABBITMQ_HOST=rabbitmq
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - JWT_PUBLIC_KEY_PATH=${JWT_PUBLIC_KEY_PATH}
     depends_on:
       mysql-db:
         condition: service_healthy
@@ -49,10 +56,17 @@ services:
     ports:
       - "8081:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
-      - MYSQL_URL=jdbc:mysql://mysql-db:3306/planning_dev?createDatabaseIfNotExist=true
-      - MYSQL_PASS=${MYSQL_PASS}
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_URL=jdbc:mysql://mysql-db:3306/planning_prod
+      - DB_USER=root
+      - DB_PASS=${MYSQL_PASS}
+      - DB_DRIVER=${MYSQL_DRIVER}
+      - HIBERNATE_DIALECT=${MYSQL_HIBERNATE_DIALECT}
       - SPRING_RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - JWT_PUBLIC_KEY_PATH=${JWT_PUBLIC_KEY_PATH}
     depends_on:
       mysql-db:
         condition: service_healthy
@@ -67,10 +81,17 @@ services:
     ports:
       - "8082:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
-      - MYSQL_URL=jdbc:mysql://mysql-db:3306/social_dev?createDatabaseIfNotExist=true
-      - MYSQL_PASS=${MYSQL_PASS}
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_URL=jdbc:mysql://mysql-db:3306/social_prod
+      - DB_USER=root
+      - DB_PASS=${MYSQL_PASS}
+      - DB_DRIVER=${MYSQL_DRIVER}
+      - HIBERNATE_DIALECT=${MYSQL_HIBERNATE_DIALECT}
       - SPRING_RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - JWT_PUBLIC_KEY_PATH=${JWT_PUBLIC_KEY_PATH}
     depends_on:
       mysql-db:
         condition: service_healthy

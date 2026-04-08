@@ -3,27 +3,23 @@ spring:
     name: social
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
-    username: ${DB_USER:postgres}
-    password: ${DB_PASS:password}
-    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          public-key-location: ${JWT_PUBLIC_KEY_PATH:classpath:certs/public_key.pem}
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    driver-class-name: ${DB_DRIVER}
 
   jpa:
     properties:
       hibernate:
-        dialect: ${HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
+        dialect: ${HIBERNATE_DIALECT}
         temp.use_jdbc_metadata_defaults: false
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+    open-in-view: false
 
   rabbitmq:
+    port: 5672
+    host: ${RABBITMQ_URL}
+    username: ${RABBITMQ_DEFAULT_USER}
+    password: ${RABBITMQ_DEFAULT_PASS}
     listener:
       simple:
         retry:
@@ -37,4 +33,4 @@ server:
 
 logging:
   level:
-    org.springframework.web: DEBUG
+    root: INFO

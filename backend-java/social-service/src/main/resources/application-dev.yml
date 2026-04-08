@@ -1,7 +1,7 @@
 spring:
   datasource:
     # Using local MySQL for dev mode
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/social_db?createDatabaseIfNotExist=true}
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/social_dev?createDatabaseIfNotExist=true}
     username: root
     password: ${MYSQL_PASS}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -11,12 +11,12 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          public-key-location: "" # clear the path
+          # Disabled in dev to allow MockJwtDecoder usage
+          public-key-location: ""
 
   jpa:
     properties:
       hibernate:
-        # Overwrite the dialect with MySQL
         dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
     hibernate:
@@ -31,5 +31,6 @@ spring:
 logging:
   level:
     root: INFO
-    com.travelinghelper.social: DEBUG
+    com.travelinghelper.planning: DEBUG
     org.springframework.security: DEBUG
+    org.springframework.web: DEBUG

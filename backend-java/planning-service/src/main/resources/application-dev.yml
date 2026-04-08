@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    # Using local MySQL for dev mode
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/planning_dev?createDatabaseIfNotExist=true}
+    username: root
+    password: ${MYSQL_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Using mock jwt decoder instead of the public-key for dev mode.
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Disabled in dev to allow MockJwtDecoder usage
+          public-key-location: ""
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  rabbitmq:
+    host: ${RABBITMQ_URL:localhost}
+    port: 5672
+    username: ${RABBITMQ_DEFAULT_USER:guest}
+    password: ${RABBITMQ_DEFAULT_PASS:guest}
+
+logging:
+  level:
+    root: INFO
+    com.travelinghelper.planning: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG

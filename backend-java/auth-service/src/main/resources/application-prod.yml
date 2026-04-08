@@ -1,0 +1,21 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Production requires a valid and existing public key file
+          public-key-location: ${JWT_PUBLIC_KEY_PATH}
+
+  jpa:
+    properties:
+    hibernate:
+      # Critical: Only validate schema in production to prevent accidental data loss or schema changes
+      ddl-auto: validate
+    # Disable SQL logging in production to improve performance and protect sensitive data
+    show-sql: false
+
+logging:
+  level:
+    # Only record warnings and errors for the root logger
+    root: WARN
+    com.travelinghelper.social: INFO

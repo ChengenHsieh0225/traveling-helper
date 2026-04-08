@@ -1,0 +1,67 @@
+package com.travelinghelper.social.domain.model;
+
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "shared_plans")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class SharedPlan {
+    @Id
+    private String id; // the id of the original TravelPlan within planning-service
+
+    private String userId;
+    private String title;
+    private Integer totalDays;
+
+    @OneToMany(mappedBy = "sharedPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SharedItineraryItem> items = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private SocialVisibility visibility;
+
+    // Hold by social-service
+    private Integer copyCount = 0;
+    private Integer likeCount = 0;
+
+    public static SharedPlan create(String id, String userId, String title, Integer totalDays, SocialVisibility visibility) {
+        SharedPlan plan = new SharedPlan();
+        plan.id = id;
+        plan.userId = userId;
+        plan.title = title;
+        plan.totalDays = totalDays;
+        plan.visibility = visibility;
+        return plan;
+    }
+    public void syncHeader(String title, Integer totalDays, SocialVisibility visibility) {
+        this.title = title;
+        this.totalDays = totalDays;
+        this.visibility = visibility;
+    }
+    public void syncItinerary(List<ItineraryData> itemsData) {
+        this.items.clear();
+        itemsData.forEach(data -> {
+            SharedItineraryItem item = new SharedItineraryItem(
+                data.id(), this, data.title(), data.relativeDate(), data.description(), data.type(), data.timePeriod(), data.durationText()
+            );
+            this.items.add(item);
+        });
+    }
+
+    public void incrementCopyCount() {
+        this.copyCount++;
+    }
+    public void incrementLikeCount() {
+        this.likeCount++;
+    }
+    public void decrementLikeCount() {
+        this.likeCount--;
+    }
+}

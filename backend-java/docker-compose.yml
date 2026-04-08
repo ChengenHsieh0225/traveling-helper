@@ -1,0 +1,59 @@
+services:
+  # ---------------------------------------------------------
+  # MySQL Service
+  # ---------------------------------------------------------
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      - MYSQL_DATABASE=traveling_helper
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init/db.sql:/docker-entrypoint-initdb.d/db.sql
+    networks:
+      - traveling-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------
+  # RabbitMQ Service
+  # ---------------------------------------------------------
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-server
+    networks:
+      - traveling-network
+
+  # ---------------------------------------------------------
+  # Auth Service
+  # ---------------------------------------------------------
+  auth-service:
+    container_name: auth-service
+    networks:
+      - traveling-network
+
+  # ---------------------------------------------------------
+  # Planning Service
+  # ---------------------------------------------------------
+  planning-service:
+    container_name: planning-service
+    networks:
+      - traveling-network
+
+  # ---------------------------------------------------------
+  # Social Service
+  # ---------------------------------------------------------
+  social-service:
+    container_name: social-service
+    networks:
+      - traveling-network
+
+networks:
+  traveling-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

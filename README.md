@@ -1,45 +1,88 @@
+## System Architecture
+
+> [!NOTE]
+> **Architecture Roadmap & Status Indicators**
+> To provide transparency on the development progress, this diagram uses the following visual cues:
+> * <span style="color:#FFB5B5">**Red/Pink Text**</span>: **Pending Events** – Defined in the communication contract but logic implementation is in progress.
+> * **Dashed Borders (Orange)**: **WIP Infrastructure** – Components currently being provisioned or earmarked for cloud migration (e.g., API Gateway, AWS RDS).
+> * **Solid Borders**: **Fully Implemented** – Core logic and local containerization are complete.
+
 ```mermaid
 graph TD
-    User((User)) -->|React PWA| Frontend[Frontend]
-    Frontend -->|REST API| Gateway[API Gateway / Nginx]
+    User((User: React PWA)) -->|HTTPS/JWT| Gateway[API Gateway: Nginx]
 
-    subgraph "Java Spring Boot Microservices (DDD)"
-        subgraph "Planning Service"
-            PC[Planning Controller] --> PAS[Planning App Service]
-            PAS --> PR[TravelPlan Repository]
-            PAS -->|Publish Event| MQ{RabbitMQ}
+    %% Java Cluster
+    subgraph Java_Cluster ["Core Microservices (Spring Boot / Java 21)"]
+        direction TB
+        
+        %% 加上 ID "DDD_Layers" 以便套用樣式
+        subgraph DDD_Layers ["Layered Architecture (DDD)"]
+            direction LR
+            Controller[Controller: JWT/AOP]
+            App[Application: Service/Query]
+            Domain[Domain: Aggregates/Events]
+            Infra[Infrastructure: Rabbit/JPA]
+            
+            Controller --> App --> Domain
+            App --> Infra
         end
 
-        subgraph "Social Service"
-            MQ --> PSL[PlanSyncListener]
-            PSL --> SS[Sync Service]
-            SS --> SR[SharedPlan Repository]
-            SC[SharedPlan Controller]
-        end
-
-        subgraph "Auth Service"
-            AC[Auth Controller] --> UR[User Repository]
-        end
+        Auth[Auth Service]
+        Planning[Planning Service]
+        Social[Social Service]
     end
 
-    subgraph "Python FastAPI External Support Services"
-        Gateway --> Weather[Weather Service]
-        subgraph "Weather Logic (CoR Pattern)"
-            Weather --> RH[RedisHandler]
-            RH -->|Cache Miss| OMH[OpenMeteoHandler]
-            OMH -->|Failover| OWH[OpenWeatherHandler]
-        end
-        Gateway --> Currency[Currency Service]
-        Gateway --> News[News Service]
+    %% Python Cluster
+    subgraph Python_Cluster ["External Support (FastAPI / Python)"]
+        direction TB
+        Weather[Weather: Chain of Responsibility]
+        Currency[Currency: Async Parallel Fetch]
+        News[News Service]
+        
+        Client[BaseAPIClient / HTTPX]
+        
+        Weather & Currency & News --> Client
     end
 
-    %% Storage & Infrastructure
-    PR --> DB[(MySQL DB)]
-    SR --> DB
-    UR --> DB
-    RH --> Redis[(Redis)]
-    OMC[OpenMeteo API] <-.- OMH
-    OWC[OpenWeather API] <-.- OWH
+    %% Event-Driven Architecture
+    MQ{{"RabbitMQ (Message Broker)"}}
+    Planning -.->|PlanPublishedEvent| MQ
+    Auth -.->|"<span style='color:#FFB5B5'>UserCreatedEvent</span>"| MQ
+    Social -.->|"<span style='color:#FFB5B5'>PlanCopyRequestedEvent</span>"| MQ
+    
+    MQ -.->|Listener| Social
+    MQ -.->|Listener| Planning
+
+    %% Database & Infrastructure
+    Gateway --> Auth
+    Gateway --> Planning
+    Gateway --> Social
+    Gateway --> Python_Cluster
+    
+    Auth --> MySQL[(MySQL / AWS RDS)]
+    Planning --> MySQL
+    Social --> MySQL
+    
+    Currency -.->|Read Meta-Data| PG
+    News -.->|Read Meta-Data| PG
+    Weather -.->|Read Meta-Data| PG[(PostgreSQL / Supabase)]
+    Weather -.->|Cache| Redis[(Redis)]
+    
+    %% External Integration
+    Auth --- OAuth[Google OAuth 2.0]
+    Client --> Ext_APIs([External APIs: OpenMeteo / Fawaz / GNews])
+
+    %% Styles
+    style DDD_Layers fill:#f2f2f2,stroke:#d3d3d3,stroke-width:1px,color:#555555
+    %% style Java_Cluster fill:#f9f9ff,stroke:#6c5ce7,stroke-width:2px
+    %% style Python_Cluster fill:#f0fff0,stroke:#27ae60,stroke-width:2px
+    style MQ fill:#fffbe6,stroke:#f1c40f,stroke-width:2px,color:#555555
+    style Redis fill:#fffbe6,stroke:#f1c40f,stroke-width:2px,color:#555555
+    style PG fill:#fffbe6,stroke:#f1c40f,stroke-width:2px,color:#555555
+    %% style MySQL fill:#fffbe6,stroke:#f1c40f,stroke-width:2px,color:#555555
+
+    classDef pending fill:#fff7ed,stroke:#9a3412,stroke-dasharray: 5 5,color:#9a3412
+    class Gateway,MySQL pending
 ```
 
 ## Features & Technical Highlights
@@ -79,7 +122,7 @@ graph TD
 
 - Frontend (PWA): https://traveling-helper.vercel.app/currency (Powered by Vercel).
 - Utility Services (FastAPI): https://traveling-helper.onrender.com (Powered by Render).
-- Core Microservices (Java): [Ongoing] (Deploying to AWS ECS).
+- Core Microservices (Java): [In Progress] (Deploying to AWS ECS).
 
 ---
 

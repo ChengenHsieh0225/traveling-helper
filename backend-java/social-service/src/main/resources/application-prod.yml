@@ -1,11 +1,9 @@
-spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          # Production requires a valid and existing public key file
-          public-key-location: ${JWT_PUBLIC_KEY_PATH}
+app:
+  key:
+    public-content: ${PUBLIC_KEY_BASE64}
+    private-content: ${PRIVATE_KEY_BASE64}
 
+spring:
   jpa:
     properties:
     hibernate:

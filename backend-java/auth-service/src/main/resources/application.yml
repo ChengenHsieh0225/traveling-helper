@@ -1,3 +1,8 @@
+app:
+  key:
+    public-content: ${PUBLIC_KEY_BASE64}
+    private-content: ${PRIVATE_KEY_BASE64}
+
 spring:
   application:
     name: auth
@@ -20,9 +25,6 @@ spring:
             scope:
               - email
               - profile
-      resourceserver:
-        jwt:
-          public-key-location: ${JWT_PUBLIC_KEY_PATH:classpath:certs/public_key.pem}
 
   jpa:
     properties:

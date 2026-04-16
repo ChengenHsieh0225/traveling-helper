@@ -35,6 +35,8 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - PRIVATE_KEY_BASE64=${PRIVATE_KEY_BASE64}
+      - PUBLIC_KEY_BASE64=${PUBLIC_KEY_BASE64}
     depends_on:
       mysql-db:
         condition: service_healthy

@@ -69,4 +69,9 @@ public class SharedPlanController {
         interactionService.copyPlan(planId, userId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "social-service is healthy!";
+    }
 }

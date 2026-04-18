@@ -115,9 +115,9 @@ public class PlanningController {
     }
 
     // Health Check
-    @GetMapping("/test")
-    public String test() {
-        return "Hello!";
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "planning-service is healthy!";
     }
 
     @GetMapping("/userId")

@@ -4,6 +4,7 @@ import com.travelinghelper.auth.model.User;
 import com.travelinghelper.auth.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -20,6 +21,8 @@ import java.util.Optional;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtEncoder jwtEncoder;
     private final UserRepository userRepository;
+    @Value("${app.login-target-url:http://localhost:8080/auth/callback}")
+    private String LOGIN_TARGET_URL;
     public OAuth2SuccessHandler(JwtEncoder jwtEncoder, UserRepository userRepository) {
         this.jwtEncoder = jwtEncoder;
         this.userRepository = userRepository;
@@ -69,7 +72,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // String targetUrl = "http://localhost:3000/login-success#token=" + token;
 
         // Temporary for testing purposes
-        String targetUrl = "http://localhost:8080/auth/test?token=" + token + "&name=" + user.getDisplayedName();
+        String targetUrl = LOGIN_TARGET_URL + "?token=" + token;
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }

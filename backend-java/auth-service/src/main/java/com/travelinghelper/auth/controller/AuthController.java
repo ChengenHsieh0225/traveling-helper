@@ -8,16 +8,21 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    @GetMapping("/test")
-    public String getUserInfo(@RequestParam String token, @RequestParam String name) {
-        return "Hello, " + name + ". This is your token: " + token;
+    @GetMapping("/callback")
+    public String getUserInfo(@RequestParam String token) {
+        return "Hello! This is your token: " + token;
     }
-    @PostMapping("/user")
+    @PostMapping("/users")
     public void createUser() {
 
     }
-    @PutMapping("/user")
+    @PutMapping("/users")
     public void updateUser(String name) {
 
+    }
+
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "OK";
     }
 }

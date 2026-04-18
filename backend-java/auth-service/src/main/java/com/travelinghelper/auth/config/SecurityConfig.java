@@ -25,7 +25,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login/**", "/oauth2/**", "/auth/test").permitAll()
+                .requestMatchers("/", "/login/**", "/oauth2/**", "/auth/callback", "/auth/health").permitAll()
                 .anyRequest().authenticated()
             )
             // Generate the JWT token

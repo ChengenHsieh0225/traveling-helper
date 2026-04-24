@@ -132,6 +132,9 @@ graph TD
 - Docker & Docker Compose
 - Java 21+
 
+> [!NOTE]
+> Notice: The following steps are for reference only and are subject to change as the project is still under active development.
+
 ### 1. Clone the repository
 ```bash
 # Git Clone

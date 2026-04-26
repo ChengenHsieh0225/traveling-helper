@@ -132,9 +132,6 @@ graph TD
 - Docker & Docker Compose
 - Java 21+
 
-> [!NOTE]
-> Notice: The following steps are for reference only and are subject to change as the project is still under active development.
-
 ### 1. Clone the repository
 ```bash
 # Git Clone
@@ -145,18 +142,7 @@ cd traveling-helper/backend-java
 
 ```
 
-### 2. Environment Configuration
-Please set up your environment variables before starting:
-```bash
-# Copy the example environment file
-cp .env.example .env
-
-# Open .env and fill in your credentials
-# (You can use any text editor like vim, nano, or VS Code)
-vim .env
-```
-
-### 3. Security Setup (Required)
+### 2. Security Setup (Required)
 The `auth-service` requires Google OAuth credentials and RSA keys for JWT signing.
 
 #### A. Google Auth
@@ -165,21 +151,29 @@ Obtain `CLIENT_ID` and `CLIENT_SECRET` from the Google Cloud Console.
 #### B. RSA Key Generation
 Generate the asymmetric keys required for secure token handling:
 ```bash
-# 1. Generate private key
+# 1. Generate the master private key file
 openssl genrsa -out private_key.pem 2048
 
-# 2. Convert to PKCS#8 format (.der) for Java compatibility
-openssl pkcs8 -topk8 -inform PEM -outform DER -in private_key.pem -out private_key.der -nocrypt
+# 2. Generate Private Key Base64 (PKCS#8 DER format)
+openssl pkcs8 -topk8 -inform PEM -outform DER -in private_key.pem -nocrypt | base64 | tr -d '\n ' && echo ""
 
-# 3. Export public key (.pem)
-openssl rsa -in private_key.pem -pubout -out public_key.pem
+# 3. Generate Public Key Base64 (SubjectPublicKeyInfo DER format)
+openssl rsa -in private_key.pem -pubout -outform DER | base64 | tr -d '\n ' && echo ""
+
+# (Optional) Clean up the pem file after copying the strings
+rm private_key.pem
 ```
 
-#### C. Key Placement
-Ensure the keys are placed in the following directory for each service:
-- auth-service: `src/main/resources/certs/` (requires `private_key.der` & `public_key.pem`)
-- planning-service: `src/main/resources/certs/` (requires `public_key.pem`)
-- social-service: `src/main/resources/certs/` (requires `public_key.pem`)
+### 3. Environment Configuration
+Please set up your environment variables before starting:
+```bash
+# Copy the example environment file
+cp .env.example .env
+
+# Open .env and fill in your credentials (including the base64 key strings)
+# (You can use any text editor like vim, nano, or VS Code)
+vim .env
+```
 
 ### 4. Running with Docker
 This will orchestrate the core ecosystem, including Auth, Planning, and Social services, along with RabbitMQ and MySQL:
@@ -190,6 +184,6 @@ docker-compose up -d
 
 ### 5. Verification
 Once the containers are up and healthy, you can access the service APIs at:
-- Auth Service: http://localhost:8081
-- Planning Service: http://localhost:8082
-- Social Service: http://localhost:8083
+- Auth Service: http://localhost:8080
+- Planning Service: http://localhost:8081
+- Social Service: http://localhost:8082

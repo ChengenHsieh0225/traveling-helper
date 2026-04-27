@@ -112,9 +112,10 @@ graph TD
 - [x] **Phase 2: Mobile-First Experience**: Migrated to React and implemented PWA support with optimized data fetching using `useQuery` and `asyncio` (v4-v5).
 - [x] **Phase 3: Core Domain Expansion**: Architected `Auth`, `Planning`, and `Social` services from scratch using **Spring Boot + DDD** to manage complex business logic (v7).
 - [x] **Phase 4: Service Orchestration**: Integrated **RabbitMQ** for asynchronous event-driven synchronization between Java microservices (v7).
-- [ ] **Phase 5: Cloud Infrastructure**: (In Progress) Deploying core services, MySQL, and RabbitMQ to **AWS ECS** with RDS for production-grade reliability.
-- [ ] **Phase 6: Advanced Domain Logic**: Enhancing interactive logic between `Planning`, `Social`, and `Auth` services to handle complex travel collaboration scenarios.
-- [ ] **Phase 7: Full-Stack Integration**: Developing dedicated React modules for core domains and connecting the PWA frontend to Spring Boot services via API Gateway.
+- [x] **Phase 5: Cloud Architecture & AWS Deployment**: Successfully deployed core services to **AWS ECS (Fargate)** with Service Connect, integrated with RDS (MySQL) and Managed RabbitMQ for production-grade reliability..
+- [ ] **Phase 6: Infrastructure as Code (IaC)**: (In Progress) Migrating manual AWS configurations to **Terraform** to enable version-controlled infrastructure and automated environment provisioning.
+- [ ] **Phase 7: Advanced Domain Logic**: Enhancing interactive logic between `Planning`, `Social`, and `Auth` services to handle complex travel collaboration scenarios.
+- [ ] **Phase 8: Full-Stack Integration**: Developing dedicated React modules for core domains and connecting the PWA frontend to Spring Boot services via API Gateway.
 
 ---
 
@@ -122,7 +123,10 @@ graph TD
 
 - Frontend (PWA): https://traveling-helper.vercel.app/currency (Powered by Vercel).
 - Utility Services (FastAPI): https://traveling-helper.onrender.com (Powered by Render).
-- Core Microservices (Java): [In Progress] (Deploying to AWS ECS).
+- Core Microservices (Java Spring Boot):
+  - **Architecture**: Deployed on AWS ECS (Fargate) with RabbitMQ event-driven synchronization.
+  - **Data Layer**: Powered by AWS RDS (MySQL) and S3 for config storage.
+  - **Infrastructure Status**: Successfully validated on AWS. To optimize hosting costs, the live ECS tasks are toggled based on active demonstration needs.
 
 ---
 

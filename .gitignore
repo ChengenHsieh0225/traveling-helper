@@ -8,3 +8,7 @@ test
 
 # Intellij
 .idea
+
+# K8S
+kubernetes/**/*secret.yaml
+!kubernetes/**/*secret.yaml.example

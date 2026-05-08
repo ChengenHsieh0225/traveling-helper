@@ -1,0 +1,19 @@
+apiVersion: v1
+data:
+  db.sql: |-
+    -- Create databases for Dev environment
+    CREATE DATABASE IF NOT EXISTS auth_dev;
+    CREATE DATABASE IF NOT EXISTS planning_dev;
+    CREATE DATABASE IF NOT EXISTS social_dev;
+
+    -- Create databases for Prod simulation
+    CREATE DATABASE IF NOT EXISTS auth_prod;
+    CREATE DATABASE IF NOT EXISTS planning_prod;
+    CREATE DATABASE IF NOT EXISTS social_prod;
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2026-05-08T06:58:38Z"
+  name: mysql-init-config
+  namespace: default
+  resourceVersion: "3048"
+  uid: 29dd569c-aa33-4093-a095-a81f6bb2a998

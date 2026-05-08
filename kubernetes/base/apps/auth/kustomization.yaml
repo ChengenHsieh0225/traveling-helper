@@ -1,0 +1,5 @@
+resources:
+  - auth-service-deploy.yaml
+  - auth-service-svc.yaml
+commonLabels:
+  app.kubernetes.io/name: auth-service

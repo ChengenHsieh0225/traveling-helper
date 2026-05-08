@@ -1,0 +1,7 @@
+resources:
+  - rabbitmq-deploy.yaml
+  - rabbitmq-pvc.yaml
+  - rabbitmq-secret.yaml
+  - rabbitmq-svc.yaml
+commonLabels:
+  app.kubernetes.io/name: rabbitmq

@@ -1,0 +1,5 @@
+resources:
+  - social-service-deploy.yaml
+  - social-service-svc.yaml
+commonLabels:
+  app.kubernetes.io/name: social-service

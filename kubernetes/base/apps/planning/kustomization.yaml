@@ -1,0 +1,5 @@
+resources:
+  - planning-service-deploy.yaml
+  - planning-service-svc.yaml
+commonLabels:
+  app.kubernetes.io/name: planning-service

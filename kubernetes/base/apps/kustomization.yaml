@@ -1,0 +1,8 @@
+resources:
+  - auth/
+  - planning/
+  - social/
+  - traveling-helper-config.yaml
+  - traveling-helper-secret.yaml
+commonLabels:
+  app.kubernetes.io/component: backend

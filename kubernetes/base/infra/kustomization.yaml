@@ -1,0 +1,5 @@
+resources: 
+  - mysql/
+  - rabbitmq/
+commonLabels:
+  app.kubernetes.io/component: infrastructure

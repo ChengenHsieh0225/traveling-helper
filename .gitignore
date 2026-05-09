@@ -12,3 +12,11 @@ test
 # K8S
 kubernetes/**/*secret.yaml
 !kubernetes/**/*secret.yaml.example
+
+# Terraform
+terraform/**/.terraform
+terraform/**/*.tfstate
+terraform/**/*.tfstate.backup
+terraform/**/*.tfvars
+terraform/**/*.tfvars.json
+terraform/**/crash.log

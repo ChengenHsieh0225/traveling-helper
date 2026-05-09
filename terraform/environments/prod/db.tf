@@ -51,6 +51,9 @@ module "db" {
   db_subnet_group_name = module.vpc.database_subnet_group_name
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
 
+  # Ensure VPC and Subnet Group are ready before RDS creation
+  depends_on = [module.vpc]
+
   # Skip final snapshot and disable deletion protection for easy cleanup
   skip_final_snapshot = true
   deletion_protection = false

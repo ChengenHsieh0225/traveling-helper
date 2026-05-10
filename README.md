@@ -112,10 +112,11 @@ graph TD
 - [x] **Phase 2: Mobile-First Experience**: Migrated to React and implemented PWA support with optimized data fetching using `useQuery` and `asyncio` (v4-v5).
 - [x] **Phase 3: Core Domain Expansion**: Architected `Auth`, `Planning`, and `Social` services from scratch using **Spring Boot + DDD** to manage complex business logic (v7).
 - [x] **Phase 4: Service Orchestration**: Integrated **RabbitMQ** for asynchronous event-driven synchronization between Java microservices (v7).
-- [x] **Phase 5: Cloud Architecture & AWS Deployment**: Successfully deployed core services to **AWS ECS (Fargate)** with Service Connect, integrated with RDS (MySQL) and Managed RabbitMQ for production-grade reliability..
-- [ ] **Phase 6: Infrastructure as Code (IaC)**: (In Progress) Migrating manual AWS configurations to **Terraform** to enable version-controlled infrastructure and automated environment provisioning.
-- [ ] **Phase 7: Advanced Domain Logic**: Enhancing interactive logic between `Planning`, `Social`, and `Auth` services to handle complex travel collaboration scenarios.
-- [ ] **Phase 8: Full-Stack Integration**: Developing dedicated React modules for core domains and connecting the PWA frontend to Spring Boot services via API Gateway.
+- [x] **Phase 5: Cloud Architecture (Legacy)**: Initial manual deployment to **AWS ECS (Fargate)**.
+- [x] **Phase 6: Infrastructure as Code (IaC)**: Automated AWS foundation using **Terraform**, provisioning VPC (Public/Private), RDS, ECR, and **EKS** managed clusters.
+- [x] **Phase 7: Cloud-Native Orchestration**: Deployed workloads to **EKS** using **Kustomize**, integrating **EBS CSI** for persistence and **ALB Ingress** for path-based traffic management.
+- [ ] **Phase 8: Advanced Domain Logic**: (In Progress) Enhancing interactive logic between `Planning`, `Social`, and `Auth` services to handle complex travel collaboration scenarios.
+- [ ] **Phase 9: Full-Stack Integration**: Developing dedicated React modules for core domains and connecting the PWA frontend to Spring Boot services via API Gateway.
 
 ---
 

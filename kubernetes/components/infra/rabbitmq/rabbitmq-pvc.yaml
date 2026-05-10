@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rabbitmq-pvc
+  labels:
+    app.kubernetes.io/part-of: traveling-helper
+    app.kubernetes.io/managed-by: kubectl
+    app.kubernetes.io/component: mq
+    app.kubernetes.io/name: rabbitmq
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

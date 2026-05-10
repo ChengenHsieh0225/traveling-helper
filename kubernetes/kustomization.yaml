@@ -1,6 +1,0 @@
-resources:
-  - base/
-  # - overlays/
-commonLabels:
-  app.kubernetes.io/part-of: traveling-helper
-  app.kubernetes.io/managed-by: kubectl

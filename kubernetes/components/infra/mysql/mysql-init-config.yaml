@@ -17,3 +17,8 @@ metadata:
   namespace: default
   resourceVersion: "3048"
   uid: 29dd569c-aa33-4093-a095-a81f6bb2a998
+  labels:
+    app.kubernetes.io/part-of: traveling-helper
+    app.kubernetes.io/managed-by: kubectl
+    app.kubernetes.io/component: database
+    app.kubernetes.io/name: mysql

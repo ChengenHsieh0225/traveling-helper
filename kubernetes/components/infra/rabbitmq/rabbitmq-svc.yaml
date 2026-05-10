@@ -2,6 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: rabbitmq-service
+  labels:
+    app.kubernetes.io/part-of: traveling-helper
+    app.kubernetes.io/managed-by: kubectl
+    app.kubernetes.io/component: mq
+    app.kubernetes.io/name: rabbitmq
 spec:
   ports:
     - port: 5672

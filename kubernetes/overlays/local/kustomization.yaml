@@ -1,0 +1,7 @@
+resources:
+  - ../../base
+  - traveling-helper-config.yaml
+  - traveling-helper-secret.yaml
+components:
+  - ../../components/infra/mysql
+  - ../../components/infra/rabbitmq

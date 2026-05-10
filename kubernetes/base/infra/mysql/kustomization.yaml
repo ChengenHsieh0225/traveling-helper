@@ -1,9 +1,0 @@
-resources:
-  - mysql-deploy.yaml
-  - mysql-init-config.yaml
-  - mysql-pvc.yaml
-  - mysql-secret.yaml
-  - mysql-svc.yaml
-commonLabels:
-  app.kubernetes.io/name: mysql
-  app.kubernetes.io/component: database

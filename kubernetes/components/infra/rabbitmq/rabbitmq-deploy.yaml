@@ -2,6 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rabbitmq
+  labels:
+    app.kubernetes.io/part-of: traveling-helper
+    app.kubernetes.io/managed-by: kubectl
+    app.kubernetes.io/component: mq
+    app.kubernetes.io/name: rabbitmq
 spec:
   replicas: 1
   selector:

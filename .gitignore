@@ -12,6 +12,8 @@ test
 # K8S
 kubernetes/**/*secret.yaml
 !kubernetes/**/*secret.yaml.example
+kubernetes/**/secret.env
+!kubernetes/**/secret.env.example
 
 # Terraform
 terraform/**/.terraform

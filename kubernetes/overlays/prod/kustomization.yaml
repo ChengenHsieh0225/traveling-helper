@@ -1,0 +1,35 @@
+resources:
+  - ../../base/
+
+components:
+  - ../../components/infra/rabbitmq
+
+images:
+  - name: auth-service
+    newName: 303357410194.dkr.ecr.ap-east-2.amazonaws.com/traveling-helper-auth-service
+    newTag: latest
+  - name: planning-service
+    newName: 303357410194.dkr.ecr.ap-east-2.amazonaws.com/traveling-helper-planning-service
+    newTag: latest
+  - name: social-service
+    newName: 303357410194.dkr.ecr.ap-east-2.amazonaws.com/traveling-helper-social-service
+    newTag: latest
+
+patches:
+  - target:
+      kind: Deployment
+      labelSelector: "app.kubernetes.io/name in (auth-service, planning-service, social-service)"
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Always
+
+configMapGenerator:
+  - name: traveling-helper-config
+    envs:
+      - configs/app.properties
+  
+secretGenerator:
+  - name: traveling-helper-secret
+    envs:
+      - secrets/secret.env

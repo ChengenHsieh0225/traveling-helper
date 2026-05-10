@@ -12,6 +12,10 @@ spec:
       labels:
         app: planning-service
     spec:
+      initContainers:
+      - name: wait-for-rabbitmq
+        image: busybox:latest
+        command: ['sh', '-c', 'until nc -zv rabbitmq-service 5672; do echo waiting for rabbitmq; sleep 2; done;']
       containers:
       - name: planning-service
         image: planning-service:latest 

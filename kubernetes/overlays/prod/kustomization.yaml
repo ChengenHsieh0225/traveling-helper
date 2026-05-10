@@ -1,5 +1,6 @@
 resources:
   - ../../base/
+  - storage-class.yaml
 
 components:
   - ../../components/infra/rabbitmq
@@ -23,6 +24,13 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/imagePullPolicy
         value: Always
+  - target:
+      kind: PersistentVolumeClaim
+      name: rabbitmq-pvc
+    patch: |-
+      - op: replace
+        path: /spec/storageClassName
+        value: ebs-sc
 
 configMapGenerator:
   - name: traveling-helper-config

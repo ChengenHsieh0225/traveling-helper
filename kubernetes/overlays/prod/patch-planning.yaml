@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: planning-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: planning-service
+          env:
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: /planning
+          readinessProbe:
+            httpGet:
+              path: /planning/api/plans/health

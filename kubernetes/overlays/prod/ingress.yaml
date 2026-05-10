@@ -1,0 +1,71 @@
+# 1. Auth Service Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: auth-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: traveling-helper-group
+    alb.ingress.kubernetes.io/group.order: "10"
+    alb.ingress.kubernetes.io/healthcheck-path: /auth/health
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 8080
+---
+# 2. Planning Service Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: planning-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: traveling-helper-group
+    alb.ingress.kubernetes.io/group.order: "20" 
+    alb.ingress.kubernetes.io/healthcheck-path: /planning/api/plans/health
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /planning
+            pathType: Prefix
+            backend:
+              service:
+                name: planning-service
+                port:
+                  number: 8080
+---
+# 3. Social Service Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: social-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: traveling-helper-group
+    alb.ingress.kubernetes.io/group.order: "30"
+    alb.ingress.kubernetes.io/healthcheck-path: /social/api/plans/health
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /social
+            pathType: Prefix
+            backend:
+              service:
+                name: social-service
+                port:
+                  number: 8080

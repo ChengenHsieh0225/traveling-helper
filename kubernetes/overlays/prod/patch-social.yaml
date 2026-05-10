@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: social-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: social-service
+          env:
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: /social
+          readinessProbe:
+            httpGet:
+              path: /social/api/plans/health

@@ -1,6 +1,7 @@
 resources:
   - ../../base/
   - storage-class.yaml
+  - ingress.yaml
 
 components:
   - ../../components/infra/rabbitmq
@@ -31,6 +32,8 @@ patches:
       - op: replace
         path: /spec/storageClassName
         value: ebs-sc
+  - path: patch-planning.yaml
+  - path: patch-social.yaml
 
 configMapGenerator:
   - name: traveling-helper-config

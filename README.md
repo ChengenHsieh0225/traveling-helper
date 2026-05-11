@@ -115,8 +115,9 @@ graph TD
 - [x] **Phase 5: Cloud Architecture (Legacy)**: Initial manual deployment to **AWS ECS (Fargate)**.
 - [x] **Phase 6: Infrastructure as Code (IaC)**: Automated AWS foundation using **Terraform**, provisioning VPC (Public/Private), RDS, ECR, and **EKS** managed clusters.
 - [x] **Phase 7: Cloud-Native Orchestration**: Deployed workloads to **EKS** using **Kustomize**, integrating **EBS CSI** for persistence and **ALB Ingress** for path-based traffic management.
-- [ ] **Phase 8: Advanced Domain Logic**: (In Progress) Enhancing interactive logic between `Planning`, `Social`, and `Auth` services to handle complex travel collaboration scenarios.
-- [ ] **Phase 9: Full-Stack Integration**: Developing dedicated React modules for core domains and connecting the PWA frontend to Spring Boot services via API Gateway.
+- [ ] **Phase 8: Observability & Reliability Engineering**: (In Progress) Establishing full-stack monitoring with **Prometheus/Grafana**; performing **API stress tests** to benchmark service limits and optimize resource allocation.
+- [ ] **Phase 9: Advanced Domain Logic**: Enhancing interactive logic between `Planning`, `Social`, and `Auth` services to handle complex travel collaboration scenarios.
+- [ ] **Phase 10: Full-Stack Integration**: Developing dedicated React modules for core domains and connecting the PWA frontend to Spring Boot services via API Gateway.
 
 ---
 
